@@ -3,7 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LambdaWorkbook.Api", "LambdaWorkbook.Api\LambdaWorkbook.Api.csproj", "{D27C7302-997A-473A-9141-481739004A76}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{A414F8CD-CA9E-4F0A-A56E-BF4E58CFE1F7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{4393A6EF-B4BB-4342-92BB-B09E7A04DD16}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{E54BF2C0-9AC4-4277-AEE3-2258BE83CED1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LambdaWorkbook.Api.Persistence", "..\src\LambdaWorkbook.Api.Persistence\LambdaWorkbook.Api.Persistence.csproj", "{F2FCCC43-A3AE-4236-8FEA-3EC787CED26A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LambdaWorkbook.Api.Application", "..\src\LambdaWorkbook.Api.Application\LambdaWorkbook.Api.Application.csproj", "{E545B5D9-C748-4CBC-89F7-6D1ECB8CD810}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LambdaWorkbook.Api.Domain", "..\src\LambdaWorkbook.Api.Domain\LambdaWorkbook.Api.Domain.csproj", "{ED4D5A57-DF5D-4E22-B0C4-9ED50403FBC4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LambdaWorkbook.Api", "..\src\LambdaWorkbook.Api\LambdaWorkbook.Api.csproj", "{C7141FB0-6F25-472F-ABE8-57E3EE7FFCED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,13 +23,31 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D27C7302-997A-473A-9141-481739004A76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D27C7302-997A-473A-9141-481739004A76}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D27C7302-997A-473A-9141-481739004A76}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D27C7302-997A-473A-9141-481739004A76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2FCCC43-A3AE-4236-8FEA-3EC787CED26A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2FCCC43-A3AE-4236-8FEA-3EC787CED26A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2FCCC43-A3AE-4236-8FEA-3EC787CED26A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2FCCC43-A3AE-4236-8FEA-3EC787CED26A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E545B5D9-C748-4CBC-89F7-6D1ECB8CD810}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E545B5D9-C748-4CBC-89F7-6D1ECB8CD810}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E545B5D9-C748-4CBC-89F7-6D1ECB8CD810}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E545B5D9-C748-4CBC-89F7-6D1ECB8CD810}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED4D5A57-DF5D-4E22-B0C4-9ED50403FBC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED4D5A57-DF5D-4E22-B0C4-9ED50403FBC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED4D5A57-DF5D-4E22-B0C4-9ED50403FBC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED4D5A57-DF5D-4E22-B0C4-9ED50403FBC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7141FB0-6F25-472F-ABE8-57E3EE7FFCED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7141FB0-6F25-472F-ABE8-57E3EE7FFCED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7141FB0-6F25-472F-ABE8-57E3EE7FFCED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7141FB0-6F25-472F-ABE8-57E3EE7FFCED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F2FCCC43-A3AE-4236-8FEA-3EC787CED26A} = {E54BF2C0-9AC4-4277-AEE3-2258BE83CED1}
+		{E545B5D9-C748-4CBC-89F7-6D1ECB8CD810} = {4393A6EF-B4BB-4342-92BB-B09E7A04DD16}
+		{ED4D5A57-DF5D-4E22-B0C4-9ED50403FBC4} = {4393A6EF-B4BB-4342-92BB-B09E7A04DD16}
+		{C7141FB0-6F25-472F-ABE8-57E3EE7FFCED} = {A414F8CD-CA9E-4F0A-A56E-BF4E58CFE1F7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {77835F56-DC61-4064-8525-477C0D73A360}
