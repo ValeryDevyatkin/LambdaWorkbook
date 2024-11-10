@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <span>This is Page 3</span>
+  <h1>Очень важная страница.</h1>
 </template>
 
 <style scoped></style>

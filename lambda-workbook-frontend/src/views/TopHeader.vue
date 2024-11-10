@@ -2,8 +2,12 @@
 
 <template>
   <div>
-    <span>This is Header</span>
+    <h1 class="top-header-title">Тетрадь Полураспада</h1>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.top-header-title {
+  margin: 0;
+}
+</style>

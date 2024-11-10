@@ -10,23 +10,14 @@ body,
 #app {
   display: flex;
   flex-direction: column;
+
+  background-image: url('..\assets\back.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .view-root {
-  background-color: gray;
-  margin: 5px 10px 5px 10px;
+  background-color: rgba(151, 170, 151, 0.7);
   padding: 20px;
   border-radius: 10px;
-}
-
-#app .view-root:first-child {
-  margin: 10px 10px 5px 10px;
-}
-
-#app .view-root:last-child {
-  margin: 5px 10px 10px 10px;
-}
-
-.navigation-root {
-  height: 100%;
 }

@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <span>This is Page 1</span>
+  <h1>Первая страница со всякой информацией.</h1>
 </template>
 
 <style scoped></style>

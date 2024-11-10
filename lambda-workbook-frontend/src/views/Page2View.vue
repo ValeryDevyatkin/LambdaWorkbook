@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <span>This is Page 2</span>
+  <h1>Вообше не знаю что тут должно быть.</h1>
 </template>
 
 <style scoped></style>

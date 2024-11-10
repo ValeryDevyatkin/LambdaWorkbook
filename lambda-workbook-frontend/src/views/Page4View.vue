@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <span>This is Page 4</span>
+  <h1>Совсем делать нечего?</h1>
 </template>
 
 <style scoped></style>
