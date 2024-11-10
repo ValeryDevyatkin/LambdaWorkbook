@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    <h1 class="top-header-title">Тетрадь Полураспада</h1>
+    <h1 class="top-header-title">Протоника</h1>
   </div>
 </template>
 
