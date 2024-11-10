@@ -1,9 +1,7 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <h1>This is Page 3</h1>
+  <span>This is Page 3</span>
 </template>
 
-<style>
-</style>
+<style scoped></style>

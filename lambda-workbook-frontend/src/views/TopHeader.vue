@@ -1,7 +1,9 @@
 <script setup lang="ts"></script>
 
 <template>
-  <span>This is Page 2</span>
+  <div>
+    <span>This is Header</span>
+  </div>
 </template>
 
 <style scoped></style>
