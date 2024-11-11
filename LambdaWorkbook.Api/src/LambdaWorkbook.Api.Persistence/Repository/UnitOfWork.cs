@@ -9,14 +9,14 @@ public class UnitOfWork : IUnitOfWork
 
     public UnitOfWork(
         AppDbContext context,
-        ISystemUserRepository systemUserRepository)
+        IIdentityUserRepository identityUserRepository)
     {
         _context = context;
 
-        SystemUserRepository = systemUserRepository;
+        IdentityUserRepository = identityUserRepository;
     }
 
-    public ISystemUserRepository SystemUserRepository { get; }
+    public IIdentityUserRepository IdentityUserRepository { get; }
 
     public async Task SaveChangesAsync()
     {

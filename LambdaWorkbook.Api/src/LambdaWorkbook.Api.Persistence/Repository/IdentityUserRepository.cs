@@ -5,9 +5,9 @@ using LambdaWorkbook.Api.Persistence.Repository.Base;
 
 namespace LambdaWorkbook.Api.Persistence.Repository;
 
-public class SystemUserRepository : RepositoryBase<SystemUserModel>, ISystemUserRepository
+public class IdentityUserRepository : RepositoryBase<IdentityUserModel>, IIdentityUserRepository
 {
-    public SystemUserRepository(AppDbContext context) : base(context)
+    public IdentityUserRepository(AppDbContext context) : base(context)
     {
     }
 }

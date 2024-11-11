@@ -1,4 +1,5 @@
-using LambdaWorkbook.Api.Application.Features.SystemUser;
+using LambdaWorkbook.Api;
+using LambdaWorkbook.Api.Application.Features.IdentityUser;
 using LambdaWorkbook.Api.Application.Repository;
 using LambdaWorkbook.Api.Persistence.Context;
 using LambdaWorkbook.Api.Persistence.Repository;
@@ -16,18 +17,23 @@ var builder = WebApplication.CreateBuilder(args);
     AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 
-    // TODO: Run migrations
-    //using (var scope = builder.Services.BuildServiceProvider().CreateScope())
-    //{
-    //    var dbContext = scope.ServiceProvider.GetRequiredService<MusicManagerDbContext>();
-    //    dbContext.Database.Migrate();
-    //}
+    // Run migrations
+    using (var scope = builder.Services.BuildServiceProvider().CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        dbContext.Database.Migrate();
+    }
 }
 
 // Auth settings
 {
     var secret = builder.Configuration["JWT_Secret"];
     var encodedSecret = secret == null ? null : Encoding.UTF8.GetBytes(secret);
+
+    builder.Services.AddSingleton(_ => new JwtConfig
+    {
+        Secret = secret
+    });
 
     if (encodedSecret != null)
     {
@@ -38,15 +44,10 @@ var builder = WebApplication.CreateBuilder(args);
             cfg.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(x =>
         {
-            x.RequireHttpsMetadata = false;
-            x.SaveToken = false;
             x.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(encodedSecret),
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ClockSkew = TimeSpan.Zero
             };
         });
     }
@@ -54,10 +55,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Register services
 {
-    builder.Services.AddAutoMapper(typeof(SystemUserProfile));
+    builder.Services.AddAutoMapper(typeof(IdentityUserProfile));
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-    builder.Services.AddScoped<ISystemUserRepository, SystemUserRepository>();
-    builder.Services.AddScoped<SystemUserService>();
+    builder.Services.AddScoped<IIdentityUserRepository, IdentityUserRepository>();
+    builder.Services.AddScoped<IdentityUserService>();
 }
 
 // Default
@@ -65,6 +66,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
+    builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
     var app = builder.Build();
 
@@ -76,6 +78,7 @@ var builder = WebApplication.CreateBuilder(args);
     }
 
     app.UseHttpsRedirection();
+    app.UseAuthentication();
     app.UseAuthorization();
     app.MapControllers();
     app.Run();

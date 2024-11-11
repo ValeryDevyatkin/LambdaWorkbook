@@ -2,7 +2,7 @@
 
 public interface IUnitOfWork
 {
-    ISystemUserRepository SystemUserRepository { get; }
+    IIdentityUserRepository IdentityUserRepository { get; }
 
     public Task SaveChangesAsync();
 }
