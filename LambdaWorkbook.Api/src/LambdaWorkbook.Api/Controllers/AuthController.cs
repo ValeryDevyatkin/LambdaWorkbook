@@ -1,12 +1,8 @@
-﻿using LambdaWorkbook.Api.Application.Features.AuthFeature;
-using LambdaWorkbook.Api.Application.Features.IdentityUserFeaure;
+﻿using LambdaWorkbook.Api.Application.Features.IdentityUserFeature;
+using LambdaWorkbook.Api.Application.Features.IdentityUserFeature.Dto;
 using LambdaWorkbook.Api.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace LambdaWorkbook.Api.Controllers;
 
@@ -24,9 +20,9 @@ public class AuthController : ApiControllerBase
 
     [AllowAnonymous]
     [HttpPost("create-token")]
-    public IResult CreateToken([FromServices] JwtConfig jwtConfig, LogInDto logInData)
+    public async Task<IResult> CreateToken([FromServices] JwtConfig jwtConfig, LogInDto logInData)
     {
-        if (logInData.UserName == null || jwtConfig.Secret == null)
+        if (logInData.Login == null)
         {
             return Results.BadRequest();
         }
@@ -36,25 +32,9 @@ public class AuthController : ApiControllerBase
             return Results.Unauthorized();
         }
 
-        // TODO: move to service
-        var key = Encoding.ASCII.GetBytes(jwtConfig.Secret);
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            Subject = new ClaimsIdentity([
-                new Claim("Id", Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Sub, logInData.UserName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            ]),
-            Expires = DateTime.UtcNow.AddMinutes(15),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
-            SecurityAlgorithms.HmacSha512Signature)
-        };
+        var user = await _identityUserService.FindWhenLogInAsync(logInData);
+        var jwtToken = jwtConfig.GetToken(logInData.Login);
 
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        var jwtToken = tokenHandler.WriteToken(token);
-        var stringToken = tokenHandler.WriteToken(token);
-
-        return Results.Ok(stringToken);
+        return Results.Ok(jwtToken);
     }
 }

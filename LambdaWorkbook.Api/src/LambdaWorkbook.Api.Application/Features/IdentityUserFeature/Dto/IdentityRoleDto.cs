@@ -1,4 +1,4 @@
-﻿namespace LambdaWorkbook.Api.Application.Features.IdentityUserFeaure;
+﻿namespace LambdaWorkbook.Api.Application.Features.IdentityUserFeature.Dto;
 
 public class IdentityRoleDto
 {

@@ -1,6 +1,5 @@
 using LambdaWorkbook.Api;
-using LambdaWorkbook.Api.Application.Features.AuthFeature;
-using LambdaWorkbook.Api.Application.Features.IdentityUserFeaure;
+using LambdaWorkbook.Api.Application.Features.IdentityUserFeature;
 using LambdaWorkbook.Api.Application.Repository;
 using LambdaWorkbook.Api.Persistence.Context;
 using LambdaWorkbook.Api.Persistence.Repository;
@@ -59,7 +58,6 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     builder.Services.AddScoped<IIdentityUserRepository, IdentityUserRepository>();
     builder.Services.AddScoped<IdentityUserService>();
-    builder.Services.AddScoped<AuthService>();
 }
 
 // Default
