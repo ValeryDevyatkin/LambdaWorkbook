@@ -9,6 +9,6 @@ public class AppDbContext : DbContext
     {
     }
 
-    public DbSet<IdentityUser> IdntityUsers { get; set; }
-    public DbSet<IdentityRole> IdntityRoles { get; set; }
+    public DbSet<IdentityUser> IdentityUsers { get; set; }
+    public DbSet<IdentityRole> IdentityRoles { get; set; }
 }
