@@ -1,10 +1,11 @@
 using LambdaWorkbook.Api;
-using LambdaWorkbook.Api.Application.Features.IdentityUser;
+using LambdaWorkbook.Api.Application.Features.IdentityUserFeaure;
 using LambdaWorkbook.Api.Application.Repository;
 using LambdaWorkbook.Api.Persistence.Context;
 using LambdaWorkbook.Api.Persistence.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -18,11 +19,10 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 
     // Run migrations
-    using (var scope = builder.Services.BuildServiceProvider().CreateScope())
-    {
-        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        dbContext.Database.Migrate();
-    }
+    var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+    optionsBuilder.UseNpgsql(connectionString);
+    var dbContext = new AppDbContext(optionsBuilder.Options);
+    dbContext?.Database.Migrate();
 }
 
 // Auth settings

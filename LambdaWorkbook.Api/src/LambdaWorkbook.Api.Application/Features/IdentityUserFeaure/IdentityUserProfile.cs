@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using LambdaWorkbook.Api.Domain.Model;
 
-namespace LambdaWorkbook.Api.Application.Features.IdentityUser;
+namespace LambdaWorkbook.Api.Application.Features.IdentityUserFeaure;
 
 public class IdentityUserProfile : Profile
 {
     public IdentityUserProfile()
     {
-        CreateMap<IdentityUserModel, IdentityUserDto>()
+        CreateMap<IdentityUser, IdentityUserDto>()
             .ReverseMap()
             ;
     }

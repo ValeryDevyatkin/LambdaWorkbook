@@ -3,11 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LambdaWorkbook.Api.Domain.Model;
 
-public class IdentityUserModel : ModelBase<int>
+public class IdentityRole : ModelBase<int>
 {
     [Required]
-    public string? Login { get; set; }
+    public string? Role { get; set; }
 
     [Required]
-    public string? Password { get; set; }
+    public string? UserName { get; set; }
 }

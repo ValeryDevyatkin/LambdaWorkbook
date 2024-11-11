@@ -1,5 +1,5 @@
-﻿using LambdaWorkbook.Api.Application.Features.Auth;
-using LambdaWorkbook.Api.Application.Features.IdentityUser;
+﻿using LambdaWorkbook.Api.Application.Features.AuthFeature;
+using LambdaWorkbook.Api.Application.Features.IdentityUserFeaure;
 using LambdaWorkbook.Api.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +26,7 @@ public class AuthController : ApiControllerBase
     [HttpPost("create-token")]
     public IResult CreateToken([FromServices] JwtConfig jwtConfig, LogInDto logInData)
     {
-        if (logInData.Login == null || jwtConfig.Secret == null)
+        if (logInData.UserName == null || jwtConfig.Secret == null)
         {
             return Results.BadRequest();
         }
@@ -36,12 +36,13 @@ public class AuthController : ApiControllerBase
             return Results.Unauthorized();
         }
 
+        // TODO: move to service
         var key = Encoding.ASCII.GetBytes(jwtConfig.Secret);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity([
                 new Claim("Id", Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Sub, logInData.Login),
+                new Claim(JwtRegisteredClaimNames.Sub, logInData.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             ]),
             Expires = DateTime.UtcNow.AddMinutes(15),
