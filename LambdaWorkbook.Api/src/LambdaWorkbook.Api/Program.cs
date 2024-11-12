@@ -1,8 +1,11 @@
 using LambdaWorkbook.Api;
 using LambdaWorkbook.Api.Application.Features.IdentityUserFeature;
+using LambdaWorkbook.Api.Application.Features.UserNoteFeature;
 using LambdaWorkbook.Api.Application.Repository;
+using LambdaWorkbook.Api.Application.Repository.Base;
 using LambdaWorkbook.Api.Persistence.Context;
 using LambdaWorkbook.Api.Persistence.Repository;
+using LambdaWorkbook.Api.Persistence.Repository.Base;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -55,8 +58,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Register services
 {
     builder.Services.AddAutoMapper(typeof(IdentityUserProfile));
+    builder.Services.AddAutoMapper(typeof(UserNoteProfile));
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     builder.Services.AddScoped<IIdentityUserRepository, IdentityUserRepository>();
+    builder.Services.AddScoped<IUserNoteRepository, UserNoteRepository>();
     builder.Services.AddScoped<IdentityUserService>();
 }
 

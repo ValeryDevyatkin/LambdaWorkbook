@@ -11,7 +11,10 @@ public class JwtConfig
 
     public string GetToken(string login)
     {
-        if (Secret == null) throw new ArgumentNullException(nameof(Secret));
+        if (Secret == null)
+        {
+            throw new ArgumentNullException(nameof(Secret));
+        }
 
         var key = Encoding.ASCII.GetBytes(Secret);
         var tokenDescriptor = new SecurityTokenDescriptor

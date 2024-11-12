@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LambdaWorkbook.Api.Controllers;
 
-[Authorize]
 public class AuthController : ApiControllerBase
 {
     private readonly IdentityUserService _identityUserService;
@@ -19,22 +18,30 @@ public class AuthController : ApiControllerBase
     }
 
     [AllowAnonymous]
-    [HttpPost("create-token")]
-    public async Task<IResult> CreateToken([FromServices] JwtConfig jwtConfig, LogInDto logInData)
+    [HttpPost("token")]
+    public async Task<IActionResult> GetToken([FromServices] JwtConfig jwtConfig, LogInDto logInData)
     {
-        if (logInData.Login == null)
+        try
         {
-            return Results.BadRequest();
-        }
+            if (logInData.Login == null)
+            {
+                return BadRequest(nameof(logInData.Login));
+            }
 
-        if (!HardCodeLogInHelper.IsAdmin(logInData))
+            var user = await _identityUserService.FindWhenLogInAsync(logInData);
+
+            if (user == null)
+            {
+                return NotFound(logInData);
+            }
+
+            var jwtToken = jwtConfig.GetToken(logInData.Login);
+
+            return Ok(jwtToken);
+        }
+        catch (Exception ex)
         {
-            return Results.Unauthorized();
+            return LogErrorAndReturnResult(ex);
         }
-
-        var user = await _identityUserService.FindWhenLogInAsync(logInData);
-        var jwtToken = jwtConfig.GetToken(logInData.Login);
-
-        return Results.Ok(jwtToken);
     }
 }

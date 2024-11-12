@@ -3,7 +3,7 @@ using LambdaWorkbook.Api.Domain.Model;
 
 namespace LambdaWorkbook.Api.Application.Repository;
 
-public interface IIdentityUserRepository : IRepository<IdentityUser>
+public interface IUserNoteRepository : IRepository<UserNote>
 {
-    public Task<IdentityUser?> FindWhenLogInAsync(string? login, string? password);
+    public Task<IEnumerable<UserNote>> GetForUserAsync(int userId);
 }

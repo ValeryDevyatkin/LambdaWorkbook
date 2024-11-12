@@ -11,4 +11,5 @@ public class AppDbContext : DbContext
 
     public DbSet<IdentityUser> IdentityUsers { get; set; }
     public DbSet<IdentityRole> IdentityRoles { get; set; }
+    public DbSet<UserNote> UserNotes { get; set; }
 }

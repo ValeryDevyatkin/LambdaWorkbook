@@ -12,9 +12,12 @@ public class IdentityUserRepository : RepositoryBase<IdentityUser>, IIdentityUse
     {
     }
 
-    public async Task<IdentityUser> FindWhenLogInAsync(string? login, string? password)
+    public async Task<IdentityUser?> FindWhenLogInAsync(string? login, string? password)
     {
-        var user = await Context.IdentityUsers.SingleAsync(x => x.Login == login && x.Password == password);
+        var user = await Context.IdentityUsers
+            .AsNoTracking()
+            .Include(x => x.Role)
+            .SingleOrDefaultAsync(x => x.Login == login && x.Password == password);
 
         return user;
     }
