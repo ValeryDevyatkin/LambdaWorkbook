@@ -28,6 +28,22 @@ namespace LambdaWorkbook.Api.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserNotes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Text = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserNotes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "IdentityUsers",
                 columns: table => new
                 {
@@ -61,6 +77,9 @@ namespace LambdaWorkbook.Api.Persistence.Migrations
         {
             migrationBuilder.DropTable(
                 name: "IdentityUsers");
+
+            migrationBuilder.DropTable(
+                name: "UserNotes");
 
             migrationBuilder.DropTable(
                 name: "IdentityRoles");
