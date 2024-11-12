@@ -18,13 +18,13 @@ public class UserNoteController : ApiControllerBase
     }
 
     [HttpGet("{userId}")]
-    public async Task<ActionResult<OperationResponse<IEnumerable<UserNoteDto>>>> Get(int userId)
+    public async Task<ActionResult<OperationResponse>> Get(int userId)
     {
         try
         {
             var notes = await _userNoteService.GetForUserAsync(userId);
 
-            return Ok(OperationResponse<IEnumerable<UserNoteDto>>.Succeed(notes));
+            return Ok(OperationResponse.Succeed(notes));
         }
         catch (Exception ex)
         {
@@ -68,13 +68,13 @@ public class UserNoteController : ApiControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<OperationResponse<UserNoteDto>>> Create(UserNoteDto dto)
+    public async Task<ActionResult<OperationResponse>> Create(UserNoteDto dto)
     {
         try
         {
             var result = await _userNoteService.CreateAsync(dto);
 
-            return Ok(OperationResponse<UserNoteDto>.Succeed(result));
+            return Ok(OperationResponse.Succeed(result));
         }
         catch (Exception ex)
         {

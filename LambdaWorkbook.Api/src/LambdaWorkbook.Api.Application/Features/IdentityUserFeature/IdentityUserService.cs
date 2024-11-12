@@ -48,6 +48,6 @@ public class IdentityUserService
 
         var createdDto = _mapper.Map<IdentityUserDto>(createdModel);
 
-        return OperationResponse<IdentityUserDto>.Succeed(createdDto);
+        return OperationResponse.Succeed(createdDto);
     }
 }

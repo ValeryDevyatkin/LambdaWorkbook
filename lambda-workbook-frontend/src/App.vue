@@ -5,7 +5,7 @@ import Sidebar from './views/SidebarLeft.vue'
 </script>
 
 <template>
-  <div class="grid-container">
+  <div class="app-grid-container">
     <TopHeader class="view-root header-grid-cell" />
 
     <Sidebar class="view-root" />
@@ -17,7 +17,7 @@ import Sidebar from './views/SidebarLeft.vue'
 </template>
 
 <style scoped>
-.grid-container {
+.app-grid-container {
   display: grid;
   grid-template-columns: 1fr 6fr;
   grid-template-rows: auto 1fr;

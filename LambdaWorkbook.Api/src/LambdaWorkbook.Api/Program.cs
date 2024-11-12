@@ -15,30 +15,34 @@ var builder = WebApplication.CreateBuilder(args);
 
 // DB settings
 {
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")?.Trim();
 
-    AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-    builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+    if (!string.IsNullOrEmpty(connectionString))
+    {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 
-    // Run migrations
-    var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-    optionsBuilder.UseNpgsql(connectionString);
-    var dbContext = new AppDbContext(optionsBuilder.Options);
-    dbContext?.Database.Migrate();
+        // Run migrations
+        var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+        optionsBuilder.UseNpgsql(connectionString);
+        var dbContext = new AppDbContext(optionsBuilder.Options);
+        dbContext?.Database.Migrate();
+    }
 }
 
 // Auth settings
 {
-    var secret = builder.Configuration["JWT_Secret"];
-    var encodedSecret = secret == null ? null : Encoding.UTF8.GetBytes(secret);
+    var secret = builder.Configuration["JWT_Secret"]?.Trim();
 
-    builder.Services.AddSingleton(_ => new JwtConfig
+    if (!string.IsNullOrEmpty(secret))
     {
-        Secret = secret
-    });
+        var encodedSecret = secret == null ? null : Encoding.UTF8.GetBytes(secret);
 
-    if (encodedSecret != null)
-    {
+        builder.Services.AddSingleton(_ => new JwtConfig
+        {
+            Secret = secret
+        });
+
         builder.Services.AddAuthentication(cfg =>
         {
             cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -72,18 +76,26 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddSwaggerGen();
     builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
+
+
     var app = builder.Build();
 
-    // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
         app.UseSwaggerUI();
     }
 
+    // CORS
+    app.UseCors(builder => builder
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+
     app.UseHttpsRedirection();
-    app.UseAuthentication();
-    app.UseAuthorization();
+    app.UseCors("AllowSpecificOrigin");
+    app.UseAuthentication(); // AuthN
+    app.UseAuthorization(); // AuthZ
     app.MapControllers();
     app.Run();
 }

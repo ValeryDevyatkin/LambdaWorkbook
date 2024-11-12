@@ -2,6 +2,7 @@
 
 public class OperationResponse
 {
+    public object? Result { get; init; }
     public bool Success { get; init; }
     public string? ErorMessage { get; init; }
 
@@ -14,22 +15,9 @@ public class OperationResponse
         };
     }
 
-    public static OperationResponse Succeed()
+    public static OperationResponse Succeed(object? result = null)
     {
         return new OperationResponse
-        {
-            Success = true
-        };
-    }
-}
-
-public class OperationResponse<T> : OperationResponse
-{
-    public T? Result { get; init; }
-
-    public static OperationResponse Succeed(T result)
-    {
-        return new OperationResponse<T>
         {
             Success = true,
             Result = result

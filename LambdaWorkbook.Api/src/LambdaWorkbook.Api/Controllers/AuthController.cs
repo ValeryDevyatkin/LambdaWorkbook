@@ -19,7 +19,7 @@ public class AuthController : ApiControllerBase
     }
 
     [AllowAnonymous]
-    [HttpPost]
+    [HttpPost("login")]
     public async Task<ActionResult<OperationResponse>> LogIn([FromServices] JwtConfig jwtConfig, LogInRequest request)
     {
         try
@@ -40,7 +40,7 @@ public class AuthController : ApiControllerBase
 
             var jwtToken = jwtConfig.GetToken(request.Login);
 
-            return Ok(OperationResponse<string>.Succeed(jwtToken));
+            return Ok(OperationResponse.Succeed(jwtToken));
         }
         catch (Exception ex)
         {
