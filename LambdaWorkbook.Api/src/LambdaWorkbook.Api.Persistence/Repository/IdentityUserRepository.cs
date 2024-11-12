@@ -21,4 +21,11 @@ public class IdentityUserRepository : RepositoryBase<IdentityUser>, IIdentityUse
 
         return user;
     }
+
+    public async Task<bool> FindLoginAsync(string? login)
+    {
+        var exists = await Context.IdentityUsers.AnyAsync(x => x.Login == login);
+
+        return exists;
+    }
 }

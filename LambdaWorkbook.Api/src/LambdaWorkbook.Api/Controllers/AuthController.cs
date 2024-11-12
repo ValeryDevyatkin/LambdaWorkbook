@@ -1,4 +1,5 @@
-﻿using LambdaWorkbook.Api.Application.Features.IdentityUserFeature;
+﻿using LambdaWorkbook.Api.Application.Features.Common;
+using LambdaWorkbook.Api.Application.Features.IdentityUserFeature;
 using LambdaWorkbook.Api.Application.Features.IdentityUserFeature.Dto;
 using LambdaWorkbook.Api.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
@@ -18,26 +19,50 @@ public class AuthController : ApiControllerBase
     }
 
     [AllowAnonymous]
-    [HttpPost("token")]
-    public async Task<IActionResult> GetToken([FromServices] JwtConfig jwtConfig, LogInDto logInData)
+    [HttpPost]
+    public async Task<ActionResult<OperationResponse>> LogIn([FromServices] JwtConfig jwtConfig, LogInRequest request)
     {
         try
         {
-            if (logInData.Login == null)
+            if (string.IsNullOrWhiteSpace(request.Login) || string.IsNullOrWhiteSpace(request.Password))
             {
-                return BadRequest(nameof(logInData.Login));
+                return BadRequest(
+                    OperationResponse.Failed($"Empty login [{request.Login}] or password [{request.Password}]."));
             }
 
-            var user = await _identityUserService.FindWhenLogInAsync(logInData);
+            var user = await _identityUserService.FindWhenLogInAsync(request);
 
             if (user == null)
             {
-                return NotFound(logInData);
+                return NotFound(
+                    OperationResponse.Failed($"User with login [{request.Login}] was not found."));
             }
 
-            var jwtToken = jwtConfig.GetToken(logInData.Login);
+            var jwtToken = jwtConfig.GetToken(request.Login);
 
-            return Ok(jwtToken);
+            return Ok(OperationResponse<string>.Succeed(jwtToken));
+        }
+        catch (Exception ex)
+        {
+            return LogErrorAndReturnResult(ex);
+        }
+    }
+
+    [AllowAnonymous]
+    [HttpPost("registerpublic")]
+    public async Task<ActionResult<OperationResponse>> RegisterPublicUser(RegisterPublicUserRequest request)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(request.Login) || string.IsNullOrWhiteSpace(request.Password))
+            {
+                return BadRequest(
+                    OperationResponse.Failed($"Empty login [{request.Login}] or password [{request.Password}]."));
+            }
+
+            var response = await _identityUserService.RegisterPublicUserAsync(request);
+
+            return response.Success ? Ok(response) : BadRequest(response);
         }
         catch (Exception ex)
         {

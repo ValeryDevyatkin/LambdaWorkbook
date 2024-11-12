@@ -15,5 +15,8 @@ public class IdentityUserProfile : Profile
         CreateMap<IdentityRole, IdentityRoleDto>()
             .ReverseMap()
             ;
+
+        CreateMap<RegisterPublicUserRequest, IdentityUser>()
+            ;
     }
 }

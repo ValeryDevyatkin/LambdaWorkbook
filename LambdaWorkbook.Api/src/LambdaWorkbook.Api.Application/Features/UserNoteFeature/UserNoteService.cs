@@ -20,27 +20,28 @@ public class UserNoteService
 
     public async Task<IEnumerable<UserNoteDto>> GetForUserAsync(int userId)
     {
-        var notes = await _unitOfWork.UserNoteRepository.GetForUserAsync(userId);
-        var noteDtoEnumerable = _mapper.Map<IEnumerable<UserNoteDto>>(notes);
+        var models = await _unitOfWork.UserNoteRepository.GetForUserAsync(userId);
+        var dtos = _mapper.Map<IEnumerable<UserNoteDto>>(models);
 
-        return noteDtoEnumerable;
+        return dtos;
     }
 
     public async Task<bool> DeleteAsync(int id)
     {
-        var isSuccess = await _unitOfWork.UserNoteRepository.DeleteAsync(id);
+        var success = await _unitOfWork.UserNoteRepository.DeleteAsync(id);
 
-        if (isSuccess)
+        if (success)
         {
             await _unitOfWork.SaveChangesAsync();
         }
 
-        return isSuccess;
+        return success;
     }
 
     public async Task UpdateAsync(UserNoteDto dto)
     {
         var model = _mapper.Map<UserNote>(dto);
+
         await _unitOfWork.UserNoteRepository.UpdateAsync(model);
         await _unitOfWork.SaveChangesAsync();
     }
@@ -48,8 +49,10 @@ public class UserNoteService
     public async Task<UserNoteDto> CreateAsync(UserNoteDto dto)
     {
         var model = _mapper.Map<UserNote>(dto);
+
         var createdModel = await _unitOfWork.UserNoteRepository.CreateAsync(model);
         await _unitOfWork.SaveChangesAsync();
+
         var createdDto = _mapper.Map<UserNoteDto>(createdModel);
 
         return createdDto;

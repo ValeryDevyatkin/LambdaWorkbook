@@ -2,6 +2,7 @@
 using LambdaWorkbook.Api.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 using LambdaWorkbook.Api.Application.Features.UserNoteFeature.Dto;
+using LambdaWorkbook.Api.Application.Features.Common;
 
 namespace LambdaWorkbook.Api.Controllers;
 
@@ -17,13 +18,13 @@ public class UserNoteController : ApiControllerBase
     }
 
     [HttpGet("{userId}")]
-    public async Task<ActionResult<IEnumerable<UserNoteDto>>> Get(int userId)
+    public async Task<ActionResult<OperationResponse<IEnumerable<UserNoteDto>>>> Get(int userId)
     {
         try
         {
             var notes = await _userNoteService.GetForUserAsync(userId);
 
-            return Ok(notes);
+            return Ok(OperationResponse<IEnumerable<UserNoteDto>>.Succeed(notes));
         }
         catch (Exception ex)
         {
@@ -32,7 +33,7 @@ public class UserNoteController : ApiControllerBase
     }
 
     [HttpDelete]
-    public async Task<ActionResult> Delete(int id)
+    public async Task<ActionResult<OperationResponse>> Delete(int id)
     {
         try
         {
@@ -40,10 +41,10 @@ public class UserNoteController : ApiControllerBase
 
             if (isSucess)
             {
-                return Ok(id);
+                return Ok(OperationResponse.Succeed());
             }
 
-            return NotFound(id);
+            return NotFound(OperationResponse.Failed($"Item with id [{id}] was not found."));
         }
         catch (Exception ex)
         {
@@ -52,13 +53,13 @@ public class UserNoteController : ApiControllerBase
     }
 
     [HttpPut]
-    public async Task<ActionResult> Update(UserNoteDto dto)
+    public async Task<ActionResult<OperationResponse>> Update(UserNoteDto dto)
     {
         try
         {
             await _userNoteService.UpdateAsync(dto);
 
-            return Ok();
+            return Ok(OperationResponse.Succeed());
         }
         catch (Exception ex)
         {
@@ -67,13 +68,13 @@ public class UserNoteController : ApiControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<UserNoteDto>> Create(UserNoteDto dto)
+    public async Task<ActionResult<OperationResponse<UserNoteDto>>> Create(UserNoteDto dto)
     {
         try
         {
             var result = await _userNoteService.CreateAsync(dto);
 
-            return Ok(result);
+            return Ok(OperationResponse<UserNoteDto>.Succeed(result));
         }
         catch (Exception ex)
         {
