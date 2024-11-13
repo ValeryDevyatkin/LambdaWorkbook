@@ -4,11 +4,12 @@ import { apiClient } from '@/api/client-provider'
 import { useAuthStore } from '@/store/auth'
 import { computed, ref } from 'vue'
 
-const { currentUser, setCurrentUser, isAuthorized } = useAuthStore()
-
+const authStore = useAuthStore()
 const isRegisterMode = ref(false)
 const isLogInMode = ref(false)
-const isGuestMode = computed(() => !isAuthorized && !isRegisterMode.value && !isLogInMode.value)
+const isGuestMode = computed(
+  () => !authStore.isAuthorized && !isRegisterMode.value && !isLogInMode.value,
+)
 
 async function logIn() {
   try {
@@ -16,9 +17,8 @@ async function logIn() {
       new LogInRequest({ login: 'admin', password: 'minerale' }),
     )
 
-    setCurrentUser(response.result ?? null)
+    authStore.setCurrentUser(response.result ?? null)
     isLogInMode.value = false
-    alert(JSON.stringify(response.result))
   } catch (error) {
     // TODO: generic alert
     alert(JSON.stringify(error))
@@ -40,7 +40,7 @@ async function register() {
 }
 
 function logOut() {
-  setCurrentUser(null)
+  authStore.setCurrentUser(null)
 }
 
 function startLogIn() {
@@ -71,9 +71,9 @@ function cancelRegister() {
         <button @click="startRegister">Регистрация</button>
       </div>
 
-      <div v-if="isAuthorized" class="authorized-grid">
-        <span class="guest-title">{{ currentUser?.login }}</span>
-        <span class="guest-title">({{ currentUser?.role?.name }})</span>
+      <div v-if="authStore.isAuthorized" class="authorized-grid">
+        <span class="guest-title">{{ authStore.currentUser?.login }}</span>
+        <span class="guest-title">({{ authStore.currentUser?.role?.name }})</span>
         <button @click="logOut">Выход</button>
       </div>
 
