@@ -21,23 +21,30 @@ public class IdentityUserService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<IdentityUserDto> FindWhenLogInAsync(LogInRequest request)
+    public async Task<OperationResponse<IdentityUserDto>> FindWhenLogInAsync(LogInRequest request)
     {
         var model = await _unitOfWork.IdentityUserRepository
             .FindWhenLogInAsync(request.Login, request.Password);
 
+        if (model == null)
+        {
+            return OperationResponse<IdentityUserDto>
+                .Fail($"User with login [{request.Login}] was not found.");
+        }
+
         var dto = _mapper.Map<IdentityUserDto>(model);
 
-        return dto;
+        return OperationResponse<IdentityUserDto>.Success(dto);
     }
 
-    public async Task<OperationResponse> RegisterPublicUserAsync(RegisterPublicUserRequest request)
+    public async Task<OperationResponse<IdentityUserDto>> RegisterPublicUserAsync(RegisterPublicUserRequest request)
     {
         var exists = await _unitOfWork.IdentityUserRepository.FindLoginAsync(request.Login);
 
         if (exists)
         {
-            return OperationResponse.Failed($"Login [{request.Login}] already exists.");
+            return OperationResponse<IdentityUserDto>
+                .Fail($"Login [{request.Login}] already exists.");
         }
 
         var model = _mapper.Map<IdentityUser>(request);
@@ -48,6 +55,6 @@ public class IdentityUserService
 
         var createdDto = _mapper.Map<IdentityUserDto>(createdModel);
 
-        return OperationResponse.Succeed(createdDto);
+        return OperationResponse<IdentityUserDto>.Success(createdDto);
     }
 }

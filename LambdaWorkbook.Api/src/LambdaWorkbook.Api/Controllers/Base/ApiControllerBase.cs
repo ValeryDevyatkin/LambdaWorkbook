@@ -20,6 +20,6 @@ public abstract class ApiControllerBase : ControllerBase
     {
         Logger.LogError(ex, message: ex.Message);
 
-        return BadRequest(OperationResponse.Failed(ex.Message));
+        return BadRequest(OperationResponse.Fail(ex.Message));
     }
 }

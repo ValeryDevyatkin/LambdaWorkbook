@@ -2,24 +2,43 @@
 
 public class OperationResponse
 {
-    public object? Result { get; init; }
-    public bool Success { get; init; }
+    public bool Failed { get; init; }
     public string? ErorMessage { get; init; }
 
-    public static OperationResponse Failed(string? message)
+    public static OperationResponse Fail(string? message)
     {
         return new OperationResponse
         {
-            Success = false,
+            Failed = true,
             ErorMessage = message
         };
     }
 
-    public static OperationResponse Succeed(object? result = null)
+    public static OperationResponse Success()
     {
         return new OperationResponse
         {
-            Success = true,
+        };
+    }
+}
+
+public class OperationResponse<T> : OperationResponse
+{
+    public T? Result { get; init; }
+
+    public static new OperationResponse<T> Fail(string? message)
+    {
+        return new OperationResponse<T>
+        {
+            Failed = false,
+            ErorMessage = message
+        };
+    }
+
+    public static OperationResponse<T> Success(T result)
+    {
+        return new OperationResponse<T>
+        {
             Result = result
         };
     }

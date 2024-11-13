@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LambdaWorkbook.Api.Application.Features.Common;
 using LambdaWorkbook.Api.Application.Features.UserNoteFeature.Dto;
 using LambdaWorkbook.Api.Application.Repository.Base;
 using LambdaWorkbook.Api.Domain.Model;
@@ -18,15 +19,15 @@ public class UserNoteService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<IEnumerable<UserNoteDto>> GetForUserAsync(int userId)
+    public async Task<OperationResponse<IEnumerable<UserNoteDto>>> GetForUserAsync(int userId)
     {
         var models = await _unitOfWork.UserNoteRepository.GetForUserAsync(userId);
         var dtos = _mapper.Map<IEnumerable<UserNoteDto>>(models);
 
-        return dtos;
+        return OperationResponse<IEnumerable<UserNoteDto>>.Success(dtos);
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task<OperationResponse> DeleteAsync(int id)
     {
         var success = await _unitOfWork.UserNoteRepository.DeleteAsync(id);
 
@@ -35,18 +36,22 @@ public class UserNoteService
             await _unitOfWork.SaveChangesAsync();
         }
 
-        return success;
+        return success ?
+            OperationResponse.Success() :
+            OperationResponse.Fail($"Item with id [{id}] was not found.");
     }
 
-    public async Task UpdateAsync(UserNoteDto dto)
+    public async Task<OperationResponse> UpdateAsync(UserNoteDto dto)
     {
         var model = _mapper.Map<UserNote>(dto);
 
         await _unitOfWork.UserNoteRepository.UpdateAsync(model);
         await _unitOfWork.SaveChangesAsync();
+
+        return OperationResponse.Success();
     }
 
-    public async Task<UserNoteDto> CreateAsync(UserNoteDto dto)
+    public async Task<OperationResponse<UserNoteDto>> CreateAsync(UserNoteDto dto)
     {
         var model = _mapper.Map<UserNote>(dto);
 
@@ -55,6 +60,6 @@ public class UserNoteService
 
         var createdDto = _mapper.Map<UserNoteDto>(createdModel);
 
-        return createdDto;
+        return OperationResponse<UserNoteDto>.Success(createdDto);
     }
 }

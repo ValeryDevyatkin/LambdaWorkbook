@@ -18,13 +18,13 @@ public class UserNoteController : ApiControllerBase
     }
 
     [HttpGet("{userId}")]
-    public async Task<ActionResult<OperationResponse>> Get(int userId)
+    public async Task<ActionResult<OperationResponse<IEnumerable<UserNoteDto>>>> Get(int userId)
     {
         try
         {
-            var notes = await _userNoteService.GetForUserAsync(userId);
+            var response = await _userNoteService.GetForUserAsync(userId);
 
-            return Ok(OperationResponse.Succeed(notes));
+            return response.Failed ? BadRequest(response) : Ok(response);
         }
         catch (Exception ex)
         {
@@ -37,14 +37,9 @@ public class UserNoteController : ApiControllerBase
     {
         try
         {
-            var isSucess = await _userNoteService.DeleteAsync(id);
+            var response = await _userNoteService.DeleteAsync(id);
 
-            if (isSucess)
-            {
-                return Ok(OperationResponse.Succeed());
-            }
-
-            return NotFound(OperationResponse.Failed($"Item with id [{id}] was not found."));
+            return response.Failed ? BadRequest(response) : Ok(response);
         }
         catch (Exception ex)
         {
@@ -57,9 +52,9 @@ public class UserNoteController : ApiControllerBase
     {
         try
         {
-            await _userNoteService.UpdateAsync(dto);
+            var response = await _userNoteService.UpdateAsync(dto);
 
-            return Ok(OperationResponse.Succeed());
+            return response.Failed ? BadRequest(response) : Ok(response);
         }
         catch (Exception ex)
         {
@@ -68,13 +63,13 @@ public class UserNoteController : ApiControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<OperationResponse>> Create(UserNoteDto dto)
+    public async Task<ActionResult<OperationResponse<UserNoteDto>>> Create(UserNoteDto dto)
     {
         try
         {
-            var result = await _userNoteService.CreateAsync(dto);
+            var response = await _userNoteService.CreateAsync(dto);
 
-            return Ok(OperationResponse.Succeed(result));
+            return response.Failed ? BadRequest(response) : Ok(response);
         }
         catch (Exception ex)
         {
