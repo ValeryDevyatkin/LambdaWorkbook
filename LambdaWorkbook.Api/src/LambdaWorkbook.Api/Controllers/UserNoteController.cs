@@ -2,7 +2,6 @@
 using LambdaWorkbook.Api.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 using LambdaWorkbook.Api.Application.Features.UserNoteFeature.Dto;
-using LambdaWorkbook.Api.Application.Features.Common;
 
 namespace LambdaWorkbook.Api.Controllers;
 
@@ -18,13 +17,15 @@ public class UserNoteController : ApiControllerBase
     }
 
     [HttpGet("{userId}")]
-    public async Task<ActionResult<OperationResponse<IEnumerable<UserNoteDto>>>> Get(int userId)
+    public async Task<ActionResult<IEnumerable<UserNoteDto>>> Get(int userId)
     {
         try
         {
             var response = await _userNoteService.GetForUserAsync(userId);
 
-            return response.Failed ? BadRequest(response) : Ok(response);
+            return response.Failed ?
+                BadRequest(response.ErorMessage) :
+                Ok(response.Result);
         }
         catch (Exception ex)
         {
@@ -33,13 +34,15 @@ public class UserNoteController : ApiControllerBase
     }
 
     [HttpDelete]
-    public async Task<ActionResult<OperationResponse>> Delete(int id)
+    public async Task<ActionResult> Delete(int id)
     {
         try
         {
             var response = await _userNoteService.DeleteAsync(id);
 
-            return response.Failed ? BadRequest(response) : Ok(response);
+            return response.Failed ?
+                BadRequest(response.ErorMessage) :
+                Ok();
         }
         catch (Exception ex)
         {
@@ -48,13 +51,15 @@ public class UserNoteController : ApiControllerBase
     }
 
     [HttpPut]
-    public async Task<ActionResult<OperationResponse>> Update(UserNoteDto dto)
+    public async Task<ActionResult> Update(UserNoteDto dto)
     {
         try
         {
             var response = await _userNoteService.UpdateAsync(dto);
 
-            return response.Failed ? BadRequest(response) : Ok(response);
+            return response.Failed ?
+                BadRequest(response.ErorMessage) :
+                Ok();
         }
         catch (Exception ex)
         {
@@ -63,13 +68,15 @@ public class UserNoteController : ApiControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<OperationResponse<UserNoteDto>>> Create(UserNoteDto dto)
+    public async Task<ActionResult<UserNoteDto>> Create(UserNoteDto dto)
     {
         try
         {
             var response = await _userNoteService.CreateAsync(dto);
 
-            return response.Failed ? BadRequest(response) : Ok(response);
+            return response.Failed ?
+                BadRequest(response.ErorMessage) :
+                Ok(response.Result);
         }
         catch (Exception ex)
         {

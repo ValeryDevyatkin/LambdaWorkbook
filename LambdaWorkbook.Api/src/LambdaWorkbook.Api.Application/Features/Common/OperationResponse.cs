@@ -30,7 +30,7 @@ public class OperationResponse<T> : OperationResponse
     {
         return new OperationResponse<T>
         {
-            Failed = false,
+            Failed = true,
             ErorMessage = message
         };
     }

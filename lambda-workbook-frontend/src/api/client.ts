@@ -22,7 +22,7 @@ export class Client {
      * @param body (optional) 
      * @return OK
      */
-    login(body: LogInRequest | undefined): Promise<IdentityUserDtoOperationResponse> {
+    login(body: LogInRequest | undefined): Promise<IdentityUserDto> {
         let url_ = this.baseUrl + "/api/auth/login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -42,14 +42,14 @@ export class Client {
         });
     }
 
-    protected processLogin(response: Response): Promise<IdentityUserDtoOperationResponse> {
+    protected processLogin(response: Response): Promise<IdentityUserDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = IdentityUserDtoOperationResponse.fromJS(resultData200);
+            result200 = IdentityUserDto.fromJS(resultData200);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -57,14 +57,14 @@ export class Client {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<IdentityUserDtoOperationResponse>(null as any);
+        return Promise.resolve<IdentityUserDto>(null as any);
     }
 
     /**
      * @param body (optional) 
      * @return OK
      */
-    registerpublic(body: RegisterPublicUserRequest | undefined): Promise<IdentityUserDtoOperationResponse> {
+    registerpublic(body: RegisterPublicUserRequest | undefined): Promise<IdentityUserDto> {
         let url_ = this.baseUrl + "/api/auth/registerpublic";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -84,14 +84,14 @@ export class Client {
         });
     }
 
-    protected processRegisterpublic(response: Response): Promise<IdentityUserDtoOperationResponse> {
+    protected processRegisterpublic(response: Response): Promise<IdentityUserDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = IdentityUserDtoOperationResponse.fromJS(resultData200);
+            result200 = IdentityUserDto.fromJS(resultData200);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -99,13 +99,13 @@ export class Client {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<IdentityUserDtoOperationResponse>(null as any);
+        return Promise.resolve<IdentityUserDto>(null as any);
     }
 
     /**
      * @return OK
      */
-    usernoteGET(userId: number): Promise<UserNoteDtoIEnumerableOperationResponse> {
+    usernoteAll(userId: number): Promise<UserNoteDto[]> {
         let url_ = this.baseUrl + "/api/usernote/{userId}";
         if (userId === undefined || userId === null)
             throw new Error("The parameter 'userId' must be defined.");
@@ -120,18 +120,25 @@ export class Client {
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processUsernoteGET(_response);
+            return this.processUsernoteAll(_response);
         });
     }
 
-    protected processUsernoteGET(response: Response): Promise<UserNoteDtoIEnumerableOperationResponse> {
+    protected processUsernoteAll(response: Response): Promise<UserNoteDto[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = UserNoteDtoIEnumerableOperationResponse.fromJS(resultData200);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(UserNoteDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -139,14 +146,14 @@ export class Client {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<UserNoteDtoIEnumerableOperationResponse>(null as any);
+        return Promise.resolve<UserNoteDto[]>(null as any);
     }
 
     /**
      * @param id (optional) 
      * @return OK
      */
-    usernoteDELETE(id: number | undefined): Promise<OperationResponse> {
+    usernoteDELETE(id: number | undefined): Promise<void> {
         let url_ = this.baseUrl + "/api/usernote?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -157,7 +164,6 @@ export class Client {
         let options_: RequestInit = {
             method: "DELETE",
             headers: {
-                "Accept": "text/plain"
             }
         };
 
@@ -166,29 +172,26 @@ export class Client {
         });
     }
 
-    protected processUsernoteDELETE(response: Response): Promise<OperationResponse> {
+    protected processUsernoteDELETE(response: Response): Promise<void> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = OperationResponse.fromJS(resultData200);
-            return result200;
+            return;
             });
         } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<OperationResponse>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * @param body (optional) 
      * @return OK
      */
-    usernotePUT(body: UserNoteDto | undefined): Promise<OperationResponse> {
+    usernotePUT(body: UserNoteDto | undefined): Promise<void> {
         let url_ = this.baseUrl + "/api/usernote";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -199,7 +202,6 @@ export class Client {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "text/plain"
             }
         };
 
@@ -208,29 +210,26 @@ export class Client {
         });
     }
 
-    protected processUsernotePUT(response: Response): Promise<OperationResponse> {
+    protected processUsernotePUT(response: Response): Promise<void> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = OperationResponse.fromJS(resultData200);
-            return result200;
+            return;
             });
         } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<OperationResponse>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * @param body (optional) 
      * @return OK
      */
-    usernotePOST(body: UserNoteDto | undefined): Promise<UserNoteDtoOperationResponse> {
+    usernotePOST(body: UserNoteDto | undefined): Promise<UserNoteDto> {
         let url_ = this.baseUrl + "/api/usernote";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -250,14 +249,14 @@ export class Client {
         });
     }
 
-    protected processUsernotePOST(response: Response): Promise<UserNoteDtoOperationResponse> {
+    protected processUsernotePOST(response: Response): Promise<UserNoteDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = UserNoteDtoOperationResponse.fromJS(resultData200);
+            result200 = UserNoteDto.fromJS(resultData200);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -265,7 +264,7 @@ export class Client {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<UserNoteDtoOperationResponse>(null as any);
+        return Promise.resolve<UserNoteDto>(null as any);
     }
 }
 
@@ -357,50 +356,6 @@ export interface IIdentityUserDto {
     role?: IdentityRoleDto;
 }
 
-export class IdentityUserDtoOperationResponse implements IIdentityUserDtoOperationResponse {
-    failed?: boolean;
-    erorMessage?: string | undefined;
-    result?: IdentityUserDto;
-
-    constructor(data?: IIdentityUserDtoOperationResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.failed = _data["failed"];
-            this.erorMessage = _data["erorMessage"];
-            this.result = _data["result"] ? IdentityUserDto.fromJS(_data["result"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): IdentityUserDtoOperationResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new IdentityUserDtoOperationResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["failed"] = this.failed;
-        data["erorMessage"] = this.erorMessage;
-        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
-        return data;
-    }
-}
-
-export interface IIdentityUserDtoOperationResponse {
-    failed?: boolean;
-    erorMessage?: string | undefined;
-    result?: IdentityUserDto;
-}
-
 export class LogInRequest implements ILogInRequest {
     login?: string | undefined;
     password?: string | undefined;
@@ -439,46 +394,6 @@ export class LogInRequest implements ILogInRequest {
 export interface ILogInRequest {
     login?: string | undefined;
     password?: string | undefined;
-}
-
-export class OperationResponse implements IOperationResponse {
-    failed?: boolean;
-    erorMessage?: string | undefined;
-
-    constructor(data?: IOperationResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.failed = _data["failed"];
-            this.erorMessage = _data["erorMessage"];
-        }
-    }
-
-    static fromJS(data: any): OperationResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new OperationResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["failed"] = this.failed;
-        data["erorMessage"] = this.erorMessage;
-        return data;
-    }
-}
-
-export interface IOperationResponse {
-    failed?: boolean;
-    erorMessage?: string | undefined;
 }
 
 export class RegisterPublicUserRequest implements IRegisterPublicUserRequest {
@@ -559,102 +474,6 @@ export class UserNoteDto implements IUserNoteDto {
 export interface IUserNoteDto {
     userId?: number | undefined;
     text?: string | undefined;
-}
-
-export class UserNoteDtoIEnumerableOperationResponse implements IUserNoteDtoIEnumerableOperationResponse {
-    failed?: boolean;
-    erorMessage?: string | undefined;
-    result?: UserNoteDto[] | undefined;
-
-    constructor(data?: IUserNoteDtoIEnumerableOperationResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.failed = _data["failed"];
-            this.erorMessage = _data["erorMessage"];
-            if (Array.isArray(_data["result"])) {
-                this.result = [] as any;
-                for (let item of _data["result"])
-                    this.result!.push(UserNoteDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): UserNoteDtoIEnumerableOperationResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new UserNoteDtoIEnumerableOperationResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["failed"] = this.failed;
-        data["erorMessage"] = this.erorMessage;
-        if (Array.isArray(this.result)) {
-            data["result"] = [];
-            for (let item of this.result)
-                data["result"].push(item.toJSON());
-        }
-        return data;
-    }
-}
-
-export interface IUserNoteDtoIEnumerableOperationResponse {
-    failed?: boolean;
-    erorMessage?: string | undefined;
-    result?: UserNoteDto[] | undefined;
-}
-
-export class UserNoteDtoOperationResponse implements IUserNoteDtoOperationResponse {
-    failed?: boolean;
-    erorMessage?: string | undefined;
-    result?: UserNoteDto;
-
-    constructor(data?: IUserNoteDtoOperationResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.failed = _data["failed"];
-            this.erorMessage = _data["erorMessage"];
-            this.result = _data["result"] ? UserNoteDto.fromJS(_data["result"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): UserNoteDtoOperationResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new UserNoteDtoOperationResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["failed"] = this.failed;
-        data["erorMessage"] = this.erorMessage;
-        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
-        return data;
-    }
-}
-
-export interface IUserNoteDtoOperationResponse {
-    failed?: boolean;
-    erorMessage?: string | undefined;
-    result?: UserNoteDto;
 }
 
 export class ApiException extends Error {

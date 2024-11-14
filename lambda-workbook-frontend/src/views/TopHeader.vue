@@ -2,45 +2,48 @@
 import { LogInRequest, RegisterPublicUserRequest } from '@/api/client'
 import { apiClient } from '@/api/client-provider'
 import { useAuthStore } from '@/store/auth'
+import { useUserMessageStore } from '@/store/user-message'
 import { computed, ref } from 'vue'
 
 const authStore = useAuthStore()
+const messageStore = useUserMessageStore()
 
 const login = ref('')
 const password = ref('')
 
 const isRegisterMode = ref(false)
 const isLogInMode = ref(false)
+
 const isGuestMode = computed(
   () => !authStore.isAuthorized && !isRegisterMode.value && !isLogInMode.value,
 )
 
 async function logIn() {
   try {
-    const response = await apiClient.login(
+    const user = await apiClient.login(
       new LogInRequest({ login: login.value, password: password.value }),
     )
 
-    authStore.setCurrentUser(response.result ?? null)
-
     cancelLogIn()
+    authStore.setCurrentUser(user)
+    messageStore.showMessage('Успешный вход.')
   } catch (error) {
-    alert(JSON.stringify(error))
+    messageStore.showEror(error?.response)
   }
 }
 
 async function register() {
   try {
-    const response = await apiClient.registerpublic(
+    const user = await apiClient.registerpublic(
       new RegisterPublicUserRequest({ login: login.value, password: password.value }),
     )
 
     cancelRegister()
-
-    login.value = response.result?.login ?? ''
-    isLogInMode.value = true
+    login.value = user.login ?? ''
+    startLogIn()
+    messageStore.showMessage('Пользователь создан.')
   } catch (error) {
-    alert(JSON.stringify(error))
+    messageStore.showEror(error?.response)
   }
 }
 

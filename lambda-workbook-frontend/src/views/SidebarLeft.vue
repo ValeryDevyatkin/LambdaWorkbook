@@ -19,7 +19,7 @@ import { RouterLink } from 'vue-router'
   display: block;
   font-size: large;
   font-weight: bold;
-  background-color: wheat;
+  background-color: #3a9555;
   border-radius: 10px;
   padding: 15px 0;
   margin-top: 10px;
@@ -28,16 +28,15 @@ import { RouterLink } from 'vue-router'
   text-decoration: none;
   text-align: center;
 
-  outline: 1px solid #7e3eee;
-  border: 3px solid transparent;
-  -webkit-transition: all 0.4s ease-in-out;
+  outline: 1px solid #114d17;
+  border: 1px solid transparent;
   transition: all 0.4s ease-in-out;
 }
 
 .nav-container a:hover {
   outline: 0px solid transparent;
-  border: 3px solid #7e3eee;
-  -webkit-transition: all 0.4s ease-in-out;
+  border: 1px solid #114d17;
+  box-shadow: 0 0 10px green;
   transition: all 0.4s ease-in-out;
 }
 

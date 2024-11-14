@@ -20,27 +20,27 @@ public class AuthController : ApiControllerBase
 
     [AllowAnonymous]
     [HttpPost("login")]
-    public async Task<ActionResult<OperationResponse<IdentityUserDto>>> LogIn([FromServices] JwtConfig jwtConfig, LogInRequest request)
+    public async Task<ActionResult<IdentityUserDto>> LogIn([FromServices] JwtConfig jwtConfig, LogInRequest request)
     {
         try
         {
             if (string.IsNullOrWhiteSpace(request.Login) || string.IsNullOrWhiteSpace(request.Password))
             {
-                return BadRequest(OperationResponse
-                    .Fail($"Empty login [{request.Login}] or password [{request.Password}]."));
+                return BadRequest($"Empty login [{request.Login}] or password [{request.Password}].");
             }
 
             var response = await _identityUserService.FindWhenLogInAsync(request);
 
             if (response.Failed || response.Result == null)
             {
-                return NotFound(response);
+                return NotFound(response.ErorMessage);
             }
 
+            var user = response.Result;
             var jwtToken = jwtConfig.GetToken(request.Login);
-            response.Result.JwtToken = jwtToken;
+            user.JwtToken = jwtToken;
 
-            return Ok(response);
+            return Ok(user);
         }
         catch (Exception ex)
         {
@@ -50,19 +50,18 @@ public class AuthController : ApiControllerBase
 
     [AllowAnonymous]
     [HttpPost("registerpublic")]
-    public async Task<ActionResult<OperationResponse<IdentityUserDto>>> RegisterPublicUser(RegisterPublicUserRequest request)
+    public async Task<ActionResult<IdentityUserDto>> RegisterPublicUser(RegisterPublicUserRequest request)
     {
         try
         {
             if (string.IsNullOrWhiteSpace(request.Login) || string.IsNullOrWhiteSpace(request.Password))
             {
-                return BadRequest(OperationResponse
-                    .Fail($"Empty login [{request.Login}] or password [{request.Password}]."));
+                return BadRequest($"Empty login [{request.Login}] or password [{request.Password}].");
             }
 
             var response = await _identityUserService.RegisterPublicUserAsync(request);
 
-            return response.Failed ? BadRequest(response) : Ok(response);
+            return response.Failed ? BadRequest(response.ErorMessage) : Ok(response.Result);
         }
         catch (Exception ex)
         {

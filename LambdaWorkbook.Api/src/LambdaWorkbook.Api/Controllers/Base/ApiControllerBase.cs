@@ -1,5 +1,4 @@
-﻿using LambdaWorkbook.Api.Application.Features.Common;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LambdaWorkbook.Api.Controllers.Base;
@@ -20,6 +19,6 @@ public abstract class ApiControllerBase : ControllerBase
     {
         Logger.LogError(ex, message: ex.Message);
 
-        return BadRequest(OperationResponse.Fail(ex.Message));
+        return BadRequest(ex.Message);
     }
 }

@@ -2,11 +2,15 @@
 import { RouterView } from 'vue-router'
 import TopHeader from './views/TopHeader.vue'
 import Sidebar from './views/SidebarLeft.vue'
+import UserMessage from './views/UserMessage.vue'
 </script>
 
 <template>
   <div class="app-grid">
-    <TopHeader class="view-root header-grid-cell" />
+    <div class="header-grid-cell">
+      <TopHeader class="view-root" />
+      <UserMessage />
+    </div>
 
     <Sidebar class="view-root" />
 
