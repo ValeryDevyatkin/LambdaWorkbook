@@ -5,6 +5,10 @@ import { useAuthStore } from '@/store/auth'
 import { computed, ref } from 'vue'
 
 const authStore = useAuthStore()
+
+const login = ref('')
+const password = ref('')
+
 const isRegisterMode = ref(false)
 const isLogInMode = ref(false)
 const isGuestMode = computed(
@@ -14,13 +18,13 @@ const isGuestMode = computed(
 async function logIn() {
   try {
     const response = await apiClient.login(
-      new LogInRequest({ login: 'admin', password: 'minerale' }),
+      new LogInRequest({ login: login.value, password: password.value }),
     )
 
     authStore.setCurrentUser(response.result ?? null)
-    isLogInMode.value = false
+
+    cancelLogIn()
   } catch (error) {
-    // TODO: generic alert
     alert(JSON.stringify(error))
   }
 }
@@ -28,19 +32,36 @@ async function logIn() {
 async function register() {
   try {
     const response = await apiClient.registerpublic(
-      new RegisterPublicUserRequest({ login: 'XXX', password: 'XXX' }),
+      new RegisterPublicUserRequest({ login: login.value, password: password.value }),
     )
 
-    alert(response)
-    isRegisterMode.value = false
+    cancelRegister()
+
+    login.value = response.result?.login ?? ''
+    isLogInMode.value = true
   } catch (error) {
-    // TODO: generic alert
     alert(JSON.stringify(error))
   }
 }
 
+function clearUserData() {
+  login.value = ''
+  password.value = ''
+}
+
 function logOut() {
   authStore.setCurrentUser(null)
+  clearUserData()
+}
+
+function cancelLogIn() {
+  isLogInMode.value = false
+  clearUserData()
+}
+
+function cancelRegister() {
+  isRegisterMode.value = false
+  clearUserData()
 }
 
 function startLogIn() {
@@ -49,14 +70,6 @@ function startLogIn() {
 
 function startRegister() {
   isRegisterMode.value = true
-}
-
-function cancelLogIn() {
-  isLogInMode.value = false
-}
-
-function cancelRegister() {
-  isRegisterMode.value = false
 }
 </script>
 
@@ -79,19 +92,19 @@ function cancelRegister() {
 
       <div v-if="isLogInMode" class="login-grid">
         <span>Логин:</span>
-        <input class="login-input" />
+        <input class="login-input" v-model="login" />
         <button @click="logIn">Войти</button>
         <span>Пароль:</span>
-        <input class="login-input" />
+        <input class="login-input" type="password" v-model="password" />
         <button @click="cancelLogIn">Отмена</button>
       </div>
 
       <div v-if="isRegisterMode" class="rgister-grid">
         <span>Логин:</span>
-        <input class="login-input" />
+        <input class="login-input" v-model="login" />
         <button @click="register">Создать</button>
         <span>Пароль:</span>
-        <input class="login-input" />
+        <input class="login-input" type="password" v-model="password" />
         <button @click="cancelRegister">Отмена</button>
       </div>
     </div>
