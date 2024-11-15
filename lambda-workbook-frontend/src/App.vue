@@ -7,20 +7,25 @@ import UserMessage from './views/UserMessage.vue'
 
 <template>
   <div class="app-grid">
-    <div class="header-grid-cell">
+    <div class="top-header-root">
       <TopHeader class="view-root" />
       <UserMessage />
     </div>
 
     <Sidebar class="view-root" />
 
-    <div class="view-root">
+    <div class="view-root router-container">
       <RouterView />
     </div>
   </div>
 </template>
 
 <style scoped>
+.router-container div {
+  width: 100%;
+  height: 100%;
+}
+
 .app-grid {
   display: grid;
   grid-template-columns: 1fr 6fr;
@@ -31,7 +36,7 @@ import UserMessage from './views/UserMessage.vue'
   height: 100%;
 }
 
-.header-grid-cell {
+.top-header-root {
   grid-column-start: 1;
   grid-column-end: 3;
 }

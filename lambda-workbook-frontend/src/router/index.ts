@@ -23,6 +23,11 @@ const router = createRouter({
       name: 'page4',
       component: () => import('../views/tabs/Page4View.vue'),
     },
+    {
+      path: '/notes',
+      name: 'notes',
+      component: () => import('../views/tabs/UserNotes.vue'),
+    },
   ],
 })
 

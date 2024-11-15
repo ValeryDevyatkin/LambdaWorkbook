@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { LogInRequest, RegisterPublicUserRequest } from '@/api/client'
 import { apiClient } from '@/api/client-provider'
-import { useAuthStore } from '@/store/auth'
-import { useUserMessageStore } from '@/store/user-message'
+import { useAuthStore } from '@/store/auth-store'
+import { useUserMessageStore } from '@/store/user-message-store'
 import { computed, ref } from 'vue'
 
 const authStore = useAuthStore()
@@ -28,7 +28,7 @@ async function logIn() {
     authStore.setCurrentUser(user)
     messageStore.showMessage('Успешный вход.')
   } catch (error) {
-    messageStore.showEror(error?.response)
+    messageStore.showEror(error?.response) // TODO
   }
 }
 
@@ -43,7 +43,7 @@ async function register() {
     startLogIn()
     messageStore.showMessage('Пользователь создан.')
   } catch (error) {
-    messageStore.showEror(error?.response)
+    messageStore.showEror(error?.response) //TODO
   }
 }
 
@@ -121,7 +121,6 @@ function startRegister() {
 }
 
 .top-header-title {
-  margin: 0;
   height: 100%;
   display: flex;
   align-items: center;

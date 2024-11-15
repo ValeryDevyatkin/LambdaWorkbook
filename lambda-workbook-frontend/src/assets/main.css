@@ -5,6 +5,9 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
+  font-size: large;
+  color: black;
+  text-decoration: none;
 }
 
 #app {
@@ -20,4 +23,29 @@ body,
   background-color: rgba(105, 168, 92, 0.25);
   padding: 20px;
   border-radius: 10px;
+}
+
+.tab-content {
+  background-color: rgba(214, 214, 202, 0.95);
+  width: 100%;
+  height: calc(100% - 50px);
+  margin-top: 20px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  padding: 20px;
+  border: 2px solid black;
+}
+
+h1 {
+  margin: 0;
+  font-size: xx-large;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.center-message {
+  text-align: center;
 }

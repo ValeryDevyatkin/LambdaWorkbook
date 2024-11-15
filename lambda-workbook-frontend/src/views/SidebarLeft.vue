@@ -1,23 +1,26 @@
 <script setup lang="ts">
+import { useAuthStore } from '@/store/auth-store'
 import { RouterLink } from 'vue-router'
+
+const authStore = useAuthStore()
 </script>
 
 <template>
   <div>
     <h1>Навигация</h1>
-    <nav class="nav-container">
+    <nav class="nav-list">
       <RouterLink to="/page1">Первая страница</RouterLink>
       <RouterLink to="/page2">Вторая страница</RouterLink>
       <RouterLink to="/page3">Третья страница</RouterLink>
       <RouterLink to="/page4">Не поверите, но ...</RouterLink>
+      <RouterLink to="/notes" :class="{ disabled: !authStore.isAuthorized }">Заметки</RouterLink>
     </nav>
   </div>
 </template>
 
 <style scoped>
-.nav-container a {
+.nav-list a {
   display: block;
-  font-size: large;
   font-weight: bold;
   background-color: #3a9555;
   border-radius: 10px;
@@ -33,14 +36,14 @@ import { RouterLink } from 'vue-router'
   transition: all 0.4s ease-in-out;
 }
 
-.nav-container a:hover {
+.nav-list a:hover {
   outline: 0px solid transparent;
   border: 1px solid #114d17;
   box-shadow: 0 0 10px green;
   transition: all 0.4s ease-in-out;
 }
 
-.nav-container :first-child {
-  margin-top: 0px;
+.nav-list :first-child {
+  margin-top: 20px;
 }
 </style>
