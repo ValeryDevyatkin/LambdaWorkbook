@@ -23,6 +23,7 @@ const messageStore = useUserMessageStore()
 }
 
 .user-message {
+  cursor: pointer;
   background-color: green;
   border-radius: 10px;
   position: absolute;

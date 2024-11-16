@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import TopHeader from './views/TopHeader.vue'
-import Sidebar from './views/SidebarLeft.vue'
+import HeaderView from './views/HeaderView.vue'
+import SidebarView from './views/SidebarView.vue'
 import UserMessage from './views/UserMessage.vue'
 </script>
 
 <template>
   <div class="app-grid">
     <div class="top-header-root">
-      <TopHeader class="view-root" />
+      <HeaderView class="view-root" />
       <UserMessage />
     </div>
 
-    <Sidebar class="view-root" />
+    <SidebarView class="view-root" />
 
     <div class="view-root router-container">
       <RouterView />
