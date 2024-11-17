@@ -9,6 +9,7 @@ using LambdaWorkbook.Api.Persistence.Repository.Base;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,16 +33,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Auth settings
 {
-    var secret = builder.Configuration["JWT_Secret"]?.Trim();
+    var jwtConfig = JwtConfig.CreateFromConfig(builder.Configuration);
+    builder.Services.AddSingleton(jwtConfig);
 
-    if (!string.IsNullOrEmpty(secret))
+    if (!string.IsNullOrEmpty(jwtConfig.Secret))
     {
-        var encodedSecret = secret == null ? null : Encoding.UTF8.GetBytes(secret);
-
-        builder.Services.AddSingleton(_ => new JwtConfig
-        {
-            Secret = secret
-        });
+        var encodedSecret = Encoding.UTF8.GetBytes(jwtConfig.Secret);
 
         builder.Services.AddAuthentication(cfg =>
         {
@@ -52,7 +49,13 @@ var builder = WebApplication.CreateBuilder(args);
         {
             x.TokenValidationParameters = new TokenValidationParameters
             {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
+                ValidIssuer = jwtConfig.Issuer,
+                ValidAudience = jwtConfig.Audience,
+                ClockSkew = TimeSpan.Zero,
                 IssuerSigningKey = new SymmetricSecurityKey(encodedSecret),
             };
         });
@@ -67,16 +70,40 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IIdentityUserRepository, IdentityUserRepository>();
     builder.Services.AddScoped<IUserNoteRepository, UserNoteRepository>();
     builder.Services.AddScoped<IdentityUserService>();
+    builder.Services.AddScoped<UserNoteService>();
 }
 
 // Default
 {
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
+    builder.Services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "Lambda Workbook API", Version = "v1" });
+        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            In = ParameterLocation.Header,
+            Description = "Please enter JWT token.",
+            Name = "Authorization",
+            Type = SecuritySchemeType.ApiKey
+        });
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                Array.Empty<string>()
+            }
+        });
+    });
+
     builder.Services.AddRouting(options => options.LowercaseUrls = true);
-
-
 
     var app = builder.Build();
 

@@ -4,505 +4,587 @@
 // </auto-generated>
 //----------------------
 
+import { ClientBase } from './client-base'
+
 /* tslint:disable */
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
 
-export class Client {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+export class Client extends ClientBase {
+  private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }
+  private baseUrl: string
+  protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : window as any;
-        this.baseUrl = baseUrl ?? "";
+  constructor(
+    baseUrl?: string,
+    http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> },
+  ) {
+    super()
+    this.http = http ? http : (window as any)
+    this.baseUrl = baseUrl ?? ''
+  }
+
+  /**
+   * @param body (optional)
+   * @return OK
+   */
+  login(body: LogInRequest | undefined): Promise<IdentityUserDto> {
+    let url_ = this.baseUrl + '/api/auth/login'
+    url_ = url_.replace(/[?&]$/, '')
+
+    const content_ = JSON.stringify(body)
+
+    let options_: RequestInit = {
+      body: content_,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'text/plain',
+      },
     }
 
-    /**
-     * @param body (optional) 
-     * @return OK
-     */
-    login(body: LogInRequest | undefined): Promise<IdentityUserDto> {
-        let url_ = this.baseUrl + "/api/auth/login";
-        url_ = url_.replace(/[?&]$/, "");
+    return this.transformOptions(options_)
+      .then((transformedOptions_) => {
+        return this.http.fetch(url_, transformedOptions_)
+      })
+      .then((_response: Response) => {
+        return this.processLogin(_response)
+      })
+  }
 
-        const content_ = JSON.stringify(body);
+  protected processLogin(response: Response): Promise<IdentityUserDto> {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
+    }
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null
+        let resultData200 =
+          _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver)
+        result200 = IdentityUserDto.fromJS(resultData200)
+        return result200
+      })
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          'An unexpected server error occurred.',
+          status,
+          _responseText,
+          _headers,
+        )
+      })
+    }
+    return Promise.resolve<IdentityUserDto>(null as any)
+  }
 
-        let options_: RequestInit = {
-            body: content_,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "text/plain"
-            }
-        };
+  /**
+   * @param body (optional)
+   * @return OK
+   */
+  registerpublic(body: RegisterPublicUserRequest | undefined): Promise<IdentityUserDto> {
+    let url_ = this.baseUrl + '/api/auth/registerpublic'
+    url_ = url_.replace(/[?&]$/, '')
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processLogin(_response);
-        });
+    const content_ = JSON.stringify(body)
+
+    let options_: RequestInit = {
+      body: content_,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'text/plain',
+      },
     }
 
-    protected processLogin(response: Response): Promise<IdentityUserDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = IdentityUserDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
+    return this.transformOptions(options_)
+      .then((transformedOptions_) => {
+        return this.http.fetch(url_, transformedOptions_)
+      })
+      .then((_response: Response) => {
+        return this.processRegisterpublic(_response)
+      })
+  }
+
+  protected processRegisterpublic(response: Response): Promise<IdentityUserDto> {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
+    }
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null
+        let resultData200 =
+          _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver)
+        result200 = IdentityUserDto.fromJS(resultData200)
+        return result200
+      })
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          'An unexpected server error occurred.',
+          status,
+          _responseText,
+          _headers,
+        )
+      })
+    }
+    return Promise.resolve<IdentityUserDto>(null as any)
+  }
+
+  /**
+   * @return OK
+   */
+  usernoteAll(userId: number): Promise<UserNoteDto[]> {
+    let url_ = this.baseUrl + '/api/usernote/{userId}'
+    if (userId === undefined || userId === null)
+      throw new Error("The parameter 'userId' must be defined.")
+    url_ = url_.replace('{userId}', encodeURIComponent('' + userId))
+    url_ = url_.replace(/[?&]$/, '')
+
+    let options_: RequestInit = {
+      method: 'GET',
+      headers: {
+        Accept: 'text/plain',
+      },
+    }
+
+    return this.transformOptions(options_)
+      .then((transformedOptions_) => {
+        return this.http.fetch(url_, transformedOptions_)
+      })
+      .then((_response: Response) => {
+        return this.processUsernoteAll(_response)
+      })
+  }
+
+  protected processUsernoteAll(response: Response): Promise<UserNoteDto[]> {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
+    }
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null
+        let resultData200 =
+          _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver)
+        if (Array.isArray(resultData200)) {
+          result200 = [] as any
+          for (let item of resultData200) result200!.push(UserNoteDto.fromJS(item))
+        } else {
+          result200 = <any>null
         }
-        return Promise.resolve<IdentityUserDto>(null as any);
+        return result200
+      })
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          'An unexpected server error occurred.',
+          status,
+          _responseText,
+          _headers,
+        )
+      })
+    }
+    return Promise.resolve<UserNoteDto[]>(null as any)
+  }
+
+  /**
+   * @param id (optional)
+   * @return OK
+   */
+  usernoteDELETE(id: number | undefined): Promise<void> {
+    let url_ = this.baseUrl + '/api/usernote?'
+    if (id === null) throw new Error("The parameter 'id' cannot be null.")
+    else if (id !== undefined) url_ += 'id=' + encodeURIComponent('' + id) + '&'
+    url_ = url_.replace(/[?&]$/, '')
+
+    let options_: RequestInit = {
+      method: 'DELETE',
+      headers: {},
     }
 
-    /**
-     * @param body (optional) 
-     * @return OK
-     */
-    registerpublic(body: RegisterPublicUserRequest | undefined): Promise<IdentityUserDto> {
-        let url_ = this.baseUrl + "/api/auth/registerpublic";
-        url_ = url_.replace(/[?&]$/, "");
+    return this.transformOptions(options_)
+      .then((transformedOptions_) => {
+        return this.http.fetch(url_, transformedOptions_)
+      })
+      .then((_response: Response) => {
+        return this.processUsernoteDELETE(_response)
+      })
+  }
 
-        const content_ = JSON.stringify(body);
+  protected processUsernoteDELETE(response: Response): Promise<void> {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
+    }
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        return
+      })
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          'An unexpected server error occurred.',
+          status,
+          _responseText,
+          _headers,
+        )
+      })
+    }
+    return Promise.resolve<void>(null as any)
+  }
 
-        let options_: RequestInit = {
-            body: content_,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "text/plain"
-            }
-        };
+  /**
+   * @param body (optional)
+   * @return OK
+   */
+  usernotePUT(body: UserNoteDto | undefined): Promise<void> {
+    let url_ = this.baseUrl + '/api/usernote'
+    url_ = url_.replace(/[?&]$/, '')
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processRegisterpublic(_response);
-        });
+    const content_ = JSON.stringify(body)
+
+    let options_: RequestInit = {
+      body: content_,
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     }
 
-    protected processRegisterpublic(response: Response): Promise<IdentityUserDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = IdentityUserDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<IdentityUserDto>(null as any);
+    return this.transformOptions(options_)
+      .then((transformedOptions_) => {
+        return this.http.fetch(url_, transformedOptions_)
+      })
+      .then((_response: Response) => {
+        return this.processUsernotePUT(_response)
+      })
+  }
+
+  protected processUsernotePUT(response: Response): Promise<void> {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
+    }
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        return
+      })
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          'An unexpected server error occurred.',
+          status,
+          _responseText,
+          _headers,
+        )
+      })
+    }
+    return Promise.resolve<void>(null as any)
+  }
+
+  /**
+   * @param body (optional)
+   * @return OK
+   */
+  usernotePOST(body: UserNoteDto | undefined): Promise<UserNoteDto> {
+    let url_ = this.baseUrl + '/api/usernote'
+    url_ = url_.replace(/[?&]$/, '')
+
+    const content_ = JSON.stringify(body)
+
+    let options_: RequestInit = {
+      body: content_,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'text/plain',
+      },
     }
 
-    /**
-     * @return OK
-     */
-    usernoteAll(userId: number): Promise<UserNoteDto[]> {
-        let url_ = this.baseUrl + "/api/usernote/{userId}";
-        if (userId === undefined || userId === null)
-            throw new Error("The parameter 'userId' must be defined.");
-        url_ = url_.replace("{userId}", encodeURIComponent("" + userId));
-        url_ = url_.replace(/[?&]$/, "");
+    return this.transformOptions(options_)
+      .then((transformedOptions_) => {
+        return this.http.fetch(url_, transformedOptions_)
+      })
+      .then((_response: Response) => {
+        return this.processUsernotePOST(_response)
+      })
+  }
 
-        let options_: RequestInit = {
-            method: "GET",
-            headers: {
-                "Accept": "text/plain"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processUsernoteAll(_response);
-        });
+  protected processUsernotePOST(response: Response): Promise<UserNoteDto> {
+    const status = response.status
+    let _headers: any = {}
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v))
     }
-
-    protected processUsernoteAll(response: Response): Promise<UserNoteDto[]> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(UserNoteDto.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<UserNoteDto[]>(null as any);
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null
+        let resultData200 =
+          _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver)
+        result200 = UserNoteDto.fromJS(resultData200)
+        return result200
+      })
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          'An unexpected server error occurred.',
+          status,
+          _responseText,
+          _headers,
+        )
+      })
     }
-
-    /**
-     * @param id (optional) 
-     * @return OK
-     */
-    usernoteDELETE(id: number | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/api/usernote?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: RequestInit = {
-            method: "DELETE",
-            headers: {
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processUsernoteDELETE(_response);
-        });
-    }
-
-    protected processUsernoteDELETE(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return OK
-     */
-    usernotePUT(body: UserNoteDto | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/api/usernote";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_: RequestInit = {
-            body: content_,
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processUsernotePUT(_response);
-        });
-    }
-
-    protected processUsernotePUT(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return OK
-     */
-    usernotePOST(body: UserNoteDto | undefined): Promise<UserNoteDto> {
-        let url_ = this.baseUrl + "/api/usernote";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_: RequestInit = {
-            body: content_,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "text/plain"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processUsernotePOST(_response);
-        });
-    }
-
-    protected processUsernotePOST(response: Response): Promise<UserNoteDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = UserNoteDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<UserNoteDto>(null as any);
-    }
+    return Promise.resolve<UserNoteDto>(null as any)
+  }
 }
 
 export class IdentityRoleDto implements IIdentityRoleDto {
-    id?: number;
-    name?: string | undefined;
+  id?: number
+  name?: string | undefined
 
-    constructor(data?: IIdentityRoleDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: IIdentityRoleDto) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property)) (<any>this)[property] = (<any>data)[property]
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.id = _data['id']
+      this.name = _data['name']
     }
+  }
 
-    static fromJS(data: any): IdentityRoleDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new IdentityRoleDto();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): IdentityRoleDto {
+    data = typeof data === 'object' ? data : {}
+    let result = new IdentityRoleDto()
+    result.init(data)
+    return result
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        return data;
-    }
+  toJSON(data?: any) {
+    data = typeof data === 'object' ? data : {}
+    data['id'] = this.id
+    data['name'] = this.name
+    return data
+  }
 }
 
 export interface IIdentityRoleDto {
-    id?: number;
-    name?: string | undefined;
+  id?: number
+  name?: string | undefined
 }
 
 export class IdentityUserDto implements IIdentityUserDto {
-    id?: number | undefined;
-    login?: string | undefined;
-    jwtToken?: string | undefined;
-    role?: IdentityRoleDto;
+  id?: number | undefined
+  login?: string | undefined
+  jwtToken?: string | undefined
+  role?: IdentityRoleDto
 
-    constructor(data?: IIdentityUserDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: IIdentityUserDto) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property)) (<any>this)[property] = (<any>data)[property]
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.login = _data["login"];
-            this.jwtToken = _data["jwtToken"];
-            this.role = _data["role"] ? IdentityRoleDto.fromJS(_data["role"]) : <any>undefined;
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.id = _data['id']
+      this.login = _data['login']
+      this.jwtToken = _data['jwtToken']
+      this.role = _data['role'] ? IdentityRoleDto.fromJS(_data['role']) : <any>undefined
     }
+  }
 
-    static fromJS(data: any): IdentityUserDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new IdentityUserDto();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): IdentityUserDto {
+    data = typeof data === 'object' ? data : {}
+    let result = new IdentityUserDto()
+    result.init(data)
+    return result
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["login"] = this.login;
-        data["jwtToken"] = this.jwtToken;
-        data["role"] = this.role ? this.role.toJSON() : <any>undefined;
-        return data;
-    }
+  toJSON(data?: any) {
+    data = typeof data === 'object' ? data : {}
+    data['id'] = this.id
+    data['login'] = this.login
+    data['jwtToken'] = this.jwtToken
+    data['role'] = this.role ? this.role.toJSON() : <any>undefined
+    return data
+  }
 }
 
 export interface IIdentityUserDto {
-    id?: number | undefined;
-    login?: string | undefined;
-    jwtToken?: string | undefined;
-    role?: IdentityRoleDto;
+  id?: number | undefined
+  login?: string | undefined
+  jwtToken?: string | undefined
+  role?: IdentityRoleDto
 }
 
 export class LogInRequest implements ILogInRequest {
-    login?: string | undefined;
-    password?: string | undefined;
+  login?: string | undefined
+  password?: string | undefined
 
-    constructor(data?: ILogInRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: ILogInRequest) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property)) (<any>this)[property] = (<any>data)[property]
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.login = _data["login"];
-            this.password = _data["password"];
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.login = _data['login']
+      this.password = _data['password']
     }
+  }
 
-    static fromJS(data: any): LogInRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new LogInRequest();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): LogInRequest {
+    data = typeof data === 'object' ? data : {}
+    let result = new LogInRequest()
+    result.init(data)
+    return result
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["login"] = this.login;
-        data["password"] = this.password;
-        return data;
-    }
+  toJSON(data?: any) {
+    data = typeof data === 'object' ? data : {}
+    data['login'] = this.login
+    data['password'] = this.password
+    return data
+  }
 }
 
 export interface ILogInRequest {
-    login?: string | undefined;
-    password?: string | undefined;
+  login?: string | undefined
+  password?: string | undefined
 }
 
 export class RegisterPublicUserRequest implements IRegisterPublicUserRequest {
-    login?: string | undefined;
-    password?: string | undefined;
+  login?: string | undefined
+  password?: string | undefined
 
-    constructor(data?: IRegisterPublicUserRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: IRegisterPublicUserRequest) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property)) (<any>this)[property] = (<any>data)[property]
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.login = _data["login"];
-            this.password = _data["password"];
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.login = _data['login']
+      this.password = _data['password']
     }
+  }
 
-    static fromJS(data: any): RegisterPublicUserRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new RegisterPublicUserRequest();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): RegisterPublicUserRequest {
+    data = typeof data === 'object' ? data : {}
+    let result = new RegisterPublicUserRequest()
+    result.init(data)
+    return result
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["login"] = this.login;
-        data["password"] = this.password;
-        return data;
-    }
+  toJSON(data?: any) {
+    data = typeof data === 'object' ? data : {}
+    data['login'] = this.login
+    data['password'] = this.password
+    return data
+  }
 }
 
 export interface IRegisterPublicUserRequest {
-    login?: string | undefined;
-    password?: string | undefined;
+  login?: string | undefined
+  password?: string | undefined
 }
 
 export class UserNoteDto implements IUserNoteDto {
-    userId?: number | undefined;
-    text?: string | undefined;
+  userId?: number | undefined
+  text?: string | undefined
 
-    constructor(data?: IUserNoteDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+  constructor(data?: IUserNoteDto) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property)) (<any>this)[property] = (<any>data)[property]
+      }
     }
+  }
 
-    init(_data?: any) {
-        if (_data) {
-            this.userId = _data["userId"];
-            this.text = _data["text"];
-        }
+  init(_data?: any) {
+    if (_data) {
+      this.userId = _data['userId']
+      this.text = _data['text']
     }
+  }
 
-    static fromJS(data: any): UserNoteDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new UserNoteDto();
-        result.init(data);
-        return result;
-    }
+  static fromJS(data: any): UserNoteDto {
+    data = typeof data === 'object' ? data : {}
+    let result = new UserNoteDto()
+    result.init(data)
+    return result
+  }
 
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["userId"] = this.userId;
-        data["text"] = this.text;
-        return data;
-    }
+  toJSON(data?: any) {
+    data = typeof data === 'object' ? data : {}
+    data['userId'] = this.userId
+    data['text'] = this.text
+    return data
+  }
 }
 
 export interface IUserNoteDto {
-    userId?: number | undefined;
-    text?: string | undefined;
+  userId?: number | undefined
+  text?: string | undefined
 }
 
 export class ApiException extends Error {
-    message: string;
-    status: number;
-    response: string;
-    headers: { [key: string]: any; };
-    result: any;
+  message: string
+  status: number
+  response: string
+  headers: { [key: string]: any }
+  result: any
 
-    constructor(message: string, status: number, response: string, headers: { [key: string]: any; }, result: any) {
-        super();
+  constructor(
+    message: string,
+    status: number,
+    response: string,
+    headers: { [key: string]: any },
+    result: any,
+  ) {
+    super()
 
-        this.message = message;
-        this.status = status;
-        this.response = response;
-        this.headers = headers;
-        this.result = result;
-    }
+    this.message = message
+    this.status = status
+    this.response = response
+    this.headers = headers
+    this.result = result
+  }
 
-    protected isApiException = true;
+  protected isApiException = true
 
-    static isApiException(obj: any): obj is ApiException {
-        return obj.isApiException === true;
-    }
+  static isApiException(obj: any): obj is ApiException {
+    return obj.isApiException === true
+  }
 }
 
-function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): any {
-    if (result !== null && result !== undefined)
-        throw result;
-    else
-        throw new ApiException(message, status, response, headers, null);
+function throwException(
+  message: string,
+  status: number,
+  response: string,
+  headers: { [key: string]: any },
+  result?: any,
+): any {
+  if (result !== null && result !== undefined) throw result
+  else throw new ApiException(message, status, response, headers, null)
 }
