@@ -24,8 +24,8 @@ const messageStore = useUserMessageStore()
 
 .user-message {
   cursor: pointer;
-  background-color: green;
-  border-radius: 10px;
+  background-color: var(--green-alert-color);
+  border-radius: var(--border-radius);
   position: absolute;
   padding: 10px 40px;
   margin-left: 10px;
@@ -36,25 +36,25 @@ const messageStore = useUserMessageStore()
 }
 
 .user-message-error {
-  background-color: red;
+  background-color: var(--red-alert-color);
   animation: red-pulse 0.4s infinite alternate-reverse;
 }
 
 @keyframes red-pulse {
   0% {
-    box-shadow: 0 0 5px red;
+    box-shadow: 0 0 5px var(--red-alert-color);
   }
   100% {
-    box-shadow: 0 0 20px red;
+    box-shadow: 0 0 20px var(--red-alert-color);
   }
 }
 
 @keyframes green-pulse {
   0% {
-    box-shadow: 0 0 5px green;
+    box-shadow: 0 0 5px var(--green-alert-color);
   }
   100% {
-    box-shadow: 0 0 20px green;
+    box-shadow: 0 0 20px var(--green-alert-color);
   }
 }
 </style>
