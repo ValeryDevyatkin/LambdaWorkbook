@@ -1,6 +1,7 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { IIdentityUserDto } from '@/api/client'
+import { LogInRequest, RegisterPublicUserRequest, type IIdentityUserDto } from '@/api/client'
+import { apiClient } from '@/api/client-provider'
 
 export const useAuthStore = defineStore('auth', () => {
   const currentUser = ref<IIdentityUserDto | null>(null)
@@ -10,5 +11,22 @@ export const useAuthStore = defineStore('auth', () => {
     currentUser.value = user
   }
 
-  return { currentUser, setCurrentUser, isAuthorized }
+  async function logIn(login: string, password: string) {
+    const user = await apiClient.login(new LogInRequest({ login, password }))
+    setCurrentUser(user)
+
+    return user
+  }
+
+  async function registerPublic(login: string, password: string) {
+    const user = await apiClient.registerpublic(new RegisterPublicUserRequest({ login, password }))
+
+    return user
+  }
+
+  function logOut() {
+    setCurrentUser(null)
+  }
+
+  return { currentUser, logIn, logOut, registerPublic, isAuthorized }
 })

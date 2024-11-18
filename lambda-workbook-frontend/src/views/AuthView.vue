@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { LogInRequest, RegisterPublicUserRequest } from '@/api/client'
-import { apiClient } from '@/api/client-provider'
 import CustomButton from '@/components/CustomButton.vue'
 import CustomLabel from '@/components/CustomLabel.vue'
 import { useAuthStore } from '@/store/auth-store'
@@ -22,12 +20,8 @@ const isGuestMode = computed(
 
 async function logIn() {
   try {
-    const user = await apiClient.login(
-      new LogInRequest({ login: login.value, password: password.value }),
-    )
-
+    await authStore.logIn(login.value, password.value)
     cancelLogIn()
-    authStore.setCurrentUser(user)
     messageStore.showMessage('Успешный вход.')
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -38,10 +32,7 @@ async function logIn() {
 
 async function register() {
   try {
-    const user = await apiClient.registerpublic(
-      new RegisterPublicUserRequest({ login: login.value, password: password.value }),
-    )
-
+    const user = await authStore.registerPublic(login.value, password.value)
     cancelRegister()
     login.value = user.login ?? ''
     startLogIn()
@@ -56,11 +47,6 @@ async function register() {
 function clearUserData() {
   login.value = ''
   password.value = ''
-}
-
-function logOut() {
-  authStore.setCurrentUser(null)
-  clearUserData()
 }
 
 function cancelLogIn() {
@@ -92,7 +78,7 @@ function startRegister() {
   <div v-if="authStore.isAuthorized" class="authorized-grid">
     <CustomLabel v-bind:text="authStore.currentUser?.login ?? '[NAME]'" />
     <CustomLabel v-bind:text="authStore.currentUser?.role?.name ?? '[ROLE]'" />
-    <CustomButton @click="logOut" text="Выход" />
+    <CustomButton @click="authStore.logOut" text="Выход" />
   </div>
 
   <div v-if="isLogInMode" class="login-grid">

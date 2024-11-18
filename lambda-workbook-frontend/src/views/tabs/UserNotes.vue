@@ -1,25 +1,26 @@
 <script setup lang="ts">
-import { apiClient } from '@/api/client-provider'
+import UserNoteCard from '@/components/UserNoteCard.vue'
 import { useAuthStore } from '@/store/auth-store'
+import { useUserNoteStore } from '@/store/user-note-store'
 import { onMounted } from 'vue'
 
 const authStore = useAuthStore()
+const noteStore = useUserNoteStore()
 
-async function loadNotes() {
-  if (!authStore.isAuthorized) return
-
-  const notes = await apiClient.usernoteAll(authStore.currentUser?.id ?? -1)
-  alert(JSON.stringify(notes))
-}
-
-onMounted(async () => await loadNotes())
+onMounted(async () => {
+  if (authStore.isAuthorized) {
+    await noteStore.loadNotes(authStore.currentUser?.id ?? -1)
+  }
+})
 </script>
 
 <template>
   <div>
     <h1>Заметки</h1>
     <div class="tab-content">
-      <div v-if="authStore.isAuthorized"></div>
+      <div v-if="authStore.isAuthorized">
+        <UserNoteCard v-for="note in noteStore.notes" :key="note?.id" :user-note="note" />
+      </div>
       <div v-else class="center-message">Войдите, чтобы просмотреть.</div>
     </div>
   </div>

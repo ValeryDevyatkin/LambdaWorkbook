@@ -3,7 +3,7 @@ import { defineProps } from 'vue'
 
 const props = defineProps<{
   text: string
-  isDisabled: boolean
+  isDisabled?: boolean
 }>()
 </script>
 
