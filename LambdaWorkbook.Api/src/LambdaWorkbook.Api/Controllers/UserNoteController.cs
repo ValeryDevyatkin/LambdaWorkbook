@@ -16,7 +16,7 @@ public class UserNoteController : ApiControllerBase
         _userNoteService = userNoteService;
     }
 
-    [HttpGet("{userId}")]
+    [HttpGet("{userId}", Name = "GetUserNotes")]
     public async Task<ActionResult<IEnumerable<UserNoteDto>>> Get(int userId)
     {
         try
@@ -33,7 +33,7 @@ public class UserNoteController : ApiControllerBase
         }
     }
 
-    [HttpDelete]
+    [HttpDelete(Name = "DeleteUserNote")]
     public async Task<ActionResult> Delete(int id)
     {
         try
@@ -50,7 +50,7 @@ public class UserNoteController : ApiControllerBase
         }
     }
 
-    [HttpPut]
+    [HttpPut(Name = "UpdateUserNote")]
     public async Task<ActionResult> Update(UserNoteDto dto)
     {
         try
@@ -67,7 +67,7 @@ public class UserNoteController : ApiControllerBase
         }
     }
 
-    [HttpPost]
+    [HttpPost(Name = "CreateUserNote")]
     public async Task<ActionResult<UserNoteDto>> Create(UserNoteDto dto)
     {
         try

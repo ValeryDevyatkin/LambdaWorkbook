@@ -30,8 +30,8 @@ import UserMessage from './views/UserMessage.vue'
   display: grid;
   grid-template-columns: 1fr 6fr;
   grid-template-rows: auto 1fr;
-  column-gap: 10px;
-  row-gap: 10px;
+  column-gap: var(--grid-outter-gap);
+  row-gap: var(--grid-outter-gap);
   margin: 10px;
   height: 100%;
 }

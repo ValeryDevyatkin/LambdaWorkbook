@@ -8,18 +8,18 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="tooltip">
+  <div class="tooltip-container">
     <slot></slot>
     <span class="tooltip-text" :class="{ 'tooltip-disabled': isDisabled }">{{ props.text }}</span>
   </div>
 </template>
 
 <style scoped>
-.tooltip {
+.tooltip-container {
   position: relative;
 }
 
-.tooltip .tooltip-text {
+.tooltip-container .tooltip-text {
   visibility: collapse;
   background-color: var(--black-color);
   color: rgba(214, 214, 202, 1);
@@ -28,19 +28,20 @@ const props = defineProps<{
   border-radius: var(--border-radius);
 
   position: absolute;
-  bottom: 0;
-  left: 100%;
+  top: 100%;
+  right: 0;
+  z-index: 1;
 
   text-decoration: none;
   font-size: var(--regular-font-size);
   font-family: var(--font-family);
 }
 
-.tooltip:hover .tooltip-text {
+.tooltip-container:hover .tooltip-text {
   visibility: visible;
 }
 
-.tooltip:hover .tooltip-disabled {
+.tooltip-container:hover .tooltip-disabled {
   visibility: collapse;
 }
 </style>

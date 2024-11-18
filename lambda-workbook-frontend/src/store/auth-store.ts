@@ -12,14 +12,16 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logIn(login: string, password: string) {
-    const user = await apiClient.login(new LogInRequest({ login, password }))
+    const user = await apiClient.logIn(new LogInRequest({ login, password }))
     setCurrentUser(user)
 
     return user
   }
 
   async function registerPublic(login: string, password: string) {
-    const user = await apiClient.registerpublic(new RegisterPublicUserRequest({ login, password }))
+    const user = await apiClient.registerPublicUser(
+      new RegisterPublicUserRequest({ login, password }),
+    )
 
     return user
   }

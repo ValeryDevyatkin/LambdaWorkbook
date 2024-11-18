@@ -19,7 +19,7 @@ public class AuthController : ApiControllerBase
     }
 
     [AllowAnonymous]
-    [HttpPost("login")]
+    [HttpPost("login", Name = "LogIn")]
     public async Task<ActionResult<IdentityUserDto>> LogIn([FromServices] JwtConfig jwtConfig, LogInRequest request)
     {
         try
@@ -49,7 +49,7 @@ public class AuthController : ApiControllerBase
     }
 
     [AllowAnonymous]
-    [HttpPost("registerpublic")]
+    [HttpPost("registerpublic", Name ="RegisterPublicUser")]
     public async Task<ActionResult<IdentityUserDto>> RegisterPublicUser(RegisterPublicUserRequest request)
     {
         try

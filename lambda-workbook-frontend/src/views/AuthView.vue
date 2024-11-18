@@ -104,27 +104,27 @@ function startRegister() {
 .login-grid {
   display: grid;
   grid-template-columns: auto auto auto;
-  column-gap: 5px;
-  row-gap: 5px;
+  column-gap: var(--grid-inner-gap);
+  row-gap: var(--grid-inner-gap);
 }
 
 .rgister-grid {
   display: grid;
   grid-template-columns: auto auto auto;
-  column-gap: 5px;
-  row-gap: 5px;
+  column-gap: var(--grid-inner-gap);
+  row-gap: var(--grid-inner-gap);
 }
 
 .guest-grid {
   display: grid;
   grid-template-columns: auto auto auto;
-  column-gap: 5px;
+  column-gap: var(--grid-inner-gap);
 }
 
 .authorized-grid {
   display: grid;
   grid-template-columns: auto auto auto;
-  column-gap: 5px;
+  column-gap: var(--grid-inner-gap);
 }
 
 .login-input {

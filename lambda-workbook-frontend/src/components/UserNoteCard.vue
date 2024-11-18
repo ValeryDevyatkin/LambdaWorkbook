@@ -1,37 +1,124 @@
 <script setup lang="ts">
-import type { UserNoteDto } from '@/api/client'
-import { defineProps } from 'vue'
+import { UserNoteDto } from '@/api/client'
+import { computed, defineProps, ref } from 'vue'
 import CustomTooltip from './CustomTooltip.vue'
+import { useAuthStore } from '@/store/auth-store'
+import { useUserNoteStore } from '@/store/user-note-store'
+import CustomLabel from './CustomLabel.vue'
+import { useUserMessageStore } from '@/store/user-message-store'
+
+const authStore = useAuthStore()
+const noteStore = useUserNoteStore()
+const messageStore = useUserMessageStore()
 
 const props = defineProps<{
   userNote: UserNoteDto | null
 }>()
+
+const currentNote = ref<UserNoteDto | null>(props.userNote)
+const currentNoteTitle = computed(() => `Заметка #${currentNote.value?.id}`)
+
+function addNote() {
+  const currentUserId = authStore.currentUser?.id
+
+  const emptyNote = new UserNoteDto({
+    userId: currentUserId,
+    id: undefined,
+  })
+
+  currentNote.value = emptyNote
+}
+
+function cancelAddNote() {
+  currentNote.value = null
+}
+
+async function saveNote() {
+  if (currentNote.value === null) return
+  const currentUserId = authStore.currentUser?.id
+
+  try {
+    await noteStore.saveNote(currentNote.value)
+    await noteStore.loadNotes(currentUserId)
+    messageStore.showMessage(`Записка [${currentUserId ? currentUserId : 'новая'}] сохранена.`)
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    messageStore.showEror(error?.response)
+  }
+}
+
+async function deleteNote() {
+  const noteId = currentNote.value?.id
+  const currentUserId = authStore.currentUser?.id
+
+  try {
+    await noteStore.deleteNote(noteId)
+    await noteStore.loadNotes(currentUserId)
+    messageStore.showMessage(`Записка [${noteId}] удалена.`)
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    messageStore.showEror(error?.response)
+  }
+}
 </script>
 
 <template>
-  <CustomTooltip
-    v-if="props.userNote === null"
-    text="Добавить заметку."
-    class="add-user-note-button"
-  >
-    <button class="add-user-note-button">
+  <CustomTooltip v-if="currentNote === null" text="Добавить заметку" class="add-user-note-button">
+    <button @click="addNote">
       <img src="..\assets\icons\add-50.png" />
     </button>
   </CustomTooltip>
-  <div v-else class="user-note-card">
-    {{ props.userNote?.text }}
+
+  <div v-else-if="!currentNote.id" class="user-note-grid">
+    <CustomLabel text="Новая заметка" />
+    <CustomTooltip text="Сохранить" class="icon-button">
+      <button @click="saveNote">
+        <img src="..\assets\icons\save-50.png" />
+      </button>
+    </CustomTooltip>
+    <CustomTooltip text="Отмена" class="icon-button">
+      <button @click="cancelAddNote">
+        <img src="..\assets\icons\cancel-50.png" />
+      </button>
+    </CustomTooltip>
+    <textarea v-model="currentNote.text" class="user-note-textarea"></textarea>
+  </div>
+
+  <div v-else class="user-note-grid">
+    <CustomLabel :text="currentNoteTitle" />
+    <CustomTooltip text="Сохранить" class="icon-button">
+      <button @click="saveNote">
+        <img src="..\assets\icons\save-50.png" />
+      </button>
+    </CustomTooltip>
+    <CustomTooltip text="Удалить" class="icon-button">
+      <button @click="deleteNote">
+        <img src="..\assets\icons\delete-50.png" />
+      </button>
+    </CustomTooltip>
+    <textarea v-model="currentNote.text" class="user-note-textarea"></textarea>
   </div>
 </template>
 
 <style scoped>
-.add-user-note-button {
-  width: 100px;
-  height: 100px;
+.user-note-grid {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  grid-template-rows: auto auto;
+  column-gap: var(--grid-inner-gap);
+  row-gap: var(--grid-inner-gap);
 }
 
-.user-note-card {
+.user-note-textarea {
+  grid-column-start: 1;
+  grid-column-end: 4;
+}
+
+.add-user-note-button,
+.add-user-note-button button {
   width: 100px;
   height: 100px;
-  background-color: yellow;
 }
 </style>

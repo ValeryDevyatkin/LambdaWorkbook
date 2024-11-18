@@ -40,7 +40,7 @@ export class Client extends ClientBase {
      * @param body (optional) 
      * @return OK
      */
-    login(body: LogInRequest | undefined): Promise<IdentityUserDto> {
+    logIn(body: LogInRequest | undefined): Promise<IdentityUserDto> {
         let url_ = this.baseUrl + "/api/auth/login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -58,11 +58,11 @@ export class Client extends ClientBase {
         return this.transformOptions(options_).then(transformedOptions_ => {
             return this.http.fetch(url_, transformedOptions_);
         }).then((_response: Response) => {
-            return this.processLogin(_response);
+            return this.processLogIn(_response);
         });
     }
 
-    protected processLogin(response: Response): Promise<IdentityUserDto> {
+    protected processLogIn(response: Response): Promise<IdentityUserDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -84,7 +84,7 @@ export class Client extends ClientBase {
      * @param body (optional) 
      * @return OK
      */
-    registerpublic(body: RegisterPublicUserRequest | undefined): Promise<IdentityUserDto> {
+    registerPublicUser(body: RegisterPublicUserRequest | undefined): Promise<IdentityUserDto> {
         let url_ = this.baseUrl + "/api/auth/registerpublic";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -102,11 +102,11 @@ export class Client extends ClientBase {
         return this.transformOptions(options_).then(transformedOptions_ => {
             return this.http.fetch(url_, transformedOptions_);
         }).then((_response: Response) => {
-            return this.processRegisterpublic(_response);
+            return this.processRegisterPublicUser(_response);
         });
     }
 
-    protected processRegisterpublic(response: Response): Promise<IdentityUserDto> {
+    protected processRegisterPublicUser(response: Response): Promise<IdentityUserDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -127,7 +127,7 @@ export class Client extends ClientBase {
     /**
      * @return OK
      */
-    usernoteAll(userId: number): Promise<UserNoteDto[]> {
+    getUserNotes(userId: number): Promise<UserNoteDto[]> {
         let url_ = this.baseUrl + "/api/usernote/{userId}";
         if (userId === undefined || userId === null)
             throw new Error("The parameter 'userId' must be defined.");
@@ -144,11 +144,11 @@ export class Client extends ClientBase {
         return this.transformOptions(options_).then(transformedOptions_ => {
             return this.http.fetch(url_, transformedOptions_);
         }).then((_response: Response) => {
-            return this.processUsernoteAll(_response);
+            return this.processGetUserNotes(_response);
         });
     }
 
-    protected processUsernoteAll(response: Response): Promise<UserNoteDto[]> {
+    protected processGetUserNotes(response: Response): Promise<UserNoteDto[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -177,7 +177,7 @@ export class Client extends ClientBase {
      * @param id (optional) 
      * @return OK
      */
-    usernoteDELETE(id: number | undefined): Promise<void> {
+    deleteUserNote(id: number | undefined): Promise<void> {
         let url_ = this.baseUrl + "/api/usernote?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -194,11 +194,11 @@ export class Client extends ClientBase {
         return this.transformOptions(options_).then(transformedOptions_ => {
             return this.http.fetch(url_, transformedOptions_);
         }).then((_response: Response) => {
-            return this.processUsernoteDELETE(_response);
+            return this.processDeleteUserNote(_response);
         });
     }
 
-    protected processUsernoteDELETE(response: Response): Promise<void> {
+    protected processDeleteUserNote(response: Response): Promise<void> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -217,7 +217,7 @@ export class Client extends ClientBase {
      * @param body (optional) 
      * @return OK
      */
-    usernotePUT(body: UserNoteDto | undefined): Promise<void> {
+    updateUserNote(body: UserNoteDto | undefined): Promise<void> {
         let url_ = this.baseUrl + "/api/usernote";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -234,11 +234,11 @@ export class Client extends ClientBase {
         return this.transformOptions(options_).then(transformedOptions_ => {
             return this.http.fetch(url_, transformedOptions_);
         }).then((_response: Response) => {
-            return this.processUsernotePUT(_response);
+            return this.processUpdateUserNote(_response);
         });
     }
 
-    protected processUsernotePUT(response: Response): Promise<void> {
+    protected processUpdateUserNote(response: Response): Promise<void> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -257,7 +257,7 @@ export class Client extends ClientBase {
      * @param body (optional) 
      * @return OK
      */
-    usernotePOST(body: UserNoteDto | undefined): Promise<UserNoteDto> {
+    createUserNote(body: UserNoteDto | undefined): Promise<UserNoteDto> {
         let url_ = this.baseUrl + "/api/usernote";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -275,11 +275,11 @@ export class Client extends ClientBase {
         return this.transformOptions(options_).then(transformedOptions_ => {
             return this.http.fetch(url_, transformedOptions_);
         }).then((_response: Response) => {
-            return this.processUsernotePOST(_response);
+            return this.processCreateUserNote(_response);
         });
     }
 
-    protected processUsernotePOST(response: Response): Promise<UserNoteDto> {
+    protected processCreateUserNote(response: Response): Promise<UserNoteDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {

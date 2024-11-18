@@ -6,6 +6,9 @@
   --border-radius: 10px;
   --input-padding: 5px;
   --border-thickness: 1px;
+  --grid-inner-gap: 5px;
+  --grid-outter-gap: 10px;
+  --outter-padding: 20px;
 
   --view-root-background-color: rgba(105, 168, 92, 0.25);
   --tab-content-background-color: rgba(214, 214, 202, 0.95);
@@ -42,14 +45,14 @@ body,
 .view-root {
   background-color: var(--view-root-background-color);
   border-radius: var(--border-radius);
-  padding: 20px;
+  padding: var(--outter-padding);
 }
 
 .tab-content {
   width: 100%;
   height: calc(100% - 50px);
-  margin-top: 20px;
-  padding: 20px;
+  margin-top: var(--outter-padding);
+  padding: var(--outter-padding);
   box-sizing: border-box;
 
   background-color: var(--tab-content-background-color);
@@ -76,7 +79,8 @@ h1 {
 }
 
 .default-input,
-input {
+input,
+textarea {
   background-color: var(--input-background-color);
 
   color: var(--black-color);
@@ -115,4 +119,18 @@ a:hover {
   border: var(--border-thickness) solid var(--button-border-hover-color);
   box-shadow: 0 0 10px var(--green-alert-color);
   transition: all 0.4s ease-in-out;
+}
+
+.icon-button,
+.icon-button button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-button img {
+  width: 30px;
+  height: 30px;
 }

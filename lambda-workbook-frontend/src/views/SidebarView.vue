@@ -26,7 +26,7 @@ const authStore = useAuthStore()
         <RouterLink to="/page4">Не поверите, но ...</RouterLink>
       </div>
 
-      <CustomTooltip text="Войдите, чтобы просмотреть." :is-disabled="authStore.isAuthorized">
+      <CustomTooltip text="Войдите, чтобы просмотреть" :is-disabled="authStore.isAuthorized">
         <RouterLink to="/notes" :class="{ disabled: !authStore.isAuthorized }">Заметки</RouterLink>
       </CustomTooltip>
     </nav>
