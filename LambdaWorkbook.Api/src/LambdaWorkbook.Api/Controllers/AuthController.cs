@@ -1,5 +1,4 @@
-﻿using LambdaWorkbook.Api.Application.Features.Common;
-using LambdaWorkbook.Api.Application.Features.IdentityUserFeature;
+﻿using LambdaWorkbook.Api.Application.Features.IdentityUserFeature;
 using LambdaWorkbook.Api.Application.Features.IdentityUserFeature.Dto;
 using LambdaWorkbook.Api.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
@@ -26,7 +25,7 @@ public class AuthController : ApiControllerBase
         {
             if (string.IsNullOrWhiteSpace(request.Login) || string.IsNullOrWhiteSpace(request.Password))
             {
-                return BadRequest($"Empty login [{request.Login}] or password [{request.Password}].");
+                return BadRequest($"Не введен логин [{request.Login}] или пароль [{request.Password}].");
             }
 
             var response = await _identityUserService.FindWhenLogInAsync(request);
@@ -56,7 +55,7 @@ public class AuthController : ApiControllerBase
         {
             if (string.IsNullOrWhiteSpace(request.Login) || string.IsNullOrWhiteSpace(request.Password))
             {
-                return BadRequest($"Empty login [{request.Login}] or password [{request.Password}].");
+                return BadRequest($"Не введен логин [{request.Login}] или пароль [{request.Password}].");
             }
 
             var response = await _identityUserService.RegisterPublicUserAsync(request);

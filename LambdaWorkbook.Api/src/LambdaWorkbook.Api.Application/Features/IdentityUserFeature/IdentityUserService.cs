@@ -29,7 +29,7 @@ public class IdentityUserService
         if (model == null)
         {
             return OperationResponse<IdentityUserDto>
-                .Fail($"User with login [{request.Login}] was not found.");
+                .Fail($"Пользователь [{request.Login}] не найден.");
         }
 
         var dto = _mapper.Map<IdentityUserDto>(model);
@@ -44,7 +44,7 @@ public class IdentityUserService
         if (exists)
         {
             return OperationResponse<IdentityUserDto>
-                .Fail($"Login [{request.Login}] already exists.");
+                .Fail($"Пользователь [{request.Login}] уже существует.");
         }
 
         var model = _mapper.Map<IdentityUser>(request);

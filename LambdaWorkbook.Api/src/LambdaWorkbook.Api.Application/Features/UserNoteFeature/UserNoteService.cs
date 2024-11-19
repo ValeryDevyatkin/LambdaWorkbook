@@ -38,7 +38,7 @@ public class UserNoteService
 
         return success ?
             OperationResponse.Success() :
-            OperationResponse.Fail($"Item with id [{id}] was not found.");
+            OperationResponse.Fail($"Заметка с номером [{id}] не найдена.");
     }
 
     public async Task<OperationResponse> UpdateAsync(UserNoteDto dto)
