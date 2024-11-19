@@ -11,7 +11,7 @@ export const useUserMessageStore = defineStore('user-message', () => {
     isHidden.value = false
     isError.value = isEror
 
-    setTimeout(hideMessage, 10000)
+    setTimeout(hideMessage, 9999)
   }
 
   function showMessage(msg: string) {

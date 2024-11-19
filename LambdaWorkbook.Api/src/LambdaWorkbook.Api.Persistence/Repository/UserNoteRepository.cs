@@ -15,7 +15,7 @@ public class UserNoteRepository : RepositoryBase<UserNote>, IUserNoteRepository
     public async Task<IEnumerable<UserNote>> GetForUserAsync(int userId)
     {
         var notes = await Context.UserNotes
-            .OrderBy(x => x.CreatedAt)
+            .OrderByDescending(x => x.Id)
             .Where(x => x.UserId == userId)
             .ToListAsync();
 

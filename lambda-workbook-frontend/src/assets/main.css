@@ -9,6 +9,7 @@
   --grid-inner-gap: 5px;
   --grid-outter-gap: 10px;
   --outter-padding: 20px;
+  --icon-button-size: 40px;
 
   --view-root-background-color: rgba(105, 168, 92, 0.25);
   --tab-content-background-color: rgba(214, 214, 202, 0.95);
@@ -31,6 +32,8 @@ body,
   text-decoration: none;
   font-size: var(--regular-font-size);
   font-family: var(--font-family);
+
+  overflow: hidden;
 }
 
 #app {
@@ -49,15 +52,19 @@ body,
 }
 
 .tab-content {
-  width: 100%;
-  height: calc(100% - 50px);
-  margin-top: var(--outter-padding);
-  padding: var(--outter-padding);
   box-sizing: border-box;
+  overflow: auto;
 
+  padding: var(--outter-padding);
   background-color: var(--tab-content-background-color);
   border-radius: var(--border-radius);
   border: var(--border-thickness) solid var(--black-color);
+}
+
+.tab-content-root {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  row-gap: var(--outter-padding);
 }
 
 h1 {
@@ -123,8 +130,8 @@ a:hover {
 
 .icon-button,
 .icon-button button {
-  width: 40px;
-  height: 40px;
+  width: var(--icon-button-size);
+  height: var(--icon-button-size);
   display: flex;
   justify-content: center;
   align-items: center;

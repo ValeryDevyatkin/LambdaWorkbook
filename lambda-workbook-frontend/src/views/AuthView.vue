@@ -76,8 +76,7 @@ function startRegister() {
   </div>
 
   <div v-if="authStore.isAuthorized" class="authorized-grid">
-    <CustomLabel v-bind:text="authStore.currentUser?.login ?? '[NAME]'" />
-    <CustomLabel v-bind:text="authStore.currentUser?.role?.name ?? '[ROLE]'" />
+    <CustomLabel v-bind:text="authStore.currentUser?.login ?? ''" />
     <CustomButton @click="authStore.logOut" text="Выход" />
   </div>
 
@@ -123,7 +122,7 @@ function startRegister() {
 
 .authorized-grid {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto auto;
   column-gap: var(--grid-inner-gap);
 }
 

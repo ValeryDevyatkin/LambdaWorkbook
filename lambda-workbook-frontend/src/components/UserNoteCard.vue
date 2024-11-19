@@ -36,11 +36,19 @@ function cancelAddNote() {
 async function saveNote() {
   if (currentNote.value === null) return
   const currentUserId = authStore.currentUser?.id
+  const currentNoteId = currentNote.value?.id
 
   try {
-    await noteStore.saveNote(currentNote.value)
+    if (currentNoteId) {
+      await noteStore.updateNote(currentNote.value)
+      messageStore.showMessage(`Заметка #${currentNoteId} обновлена.`)
+    } else {
+      const createdNote = await noteStore.createNote(currentNote.value)
+      cancelAddNote()
+      messageStore.showMessage(`Новая заметка #${createdNote.id} сохранена.`)
+    }
+
     await noteStore.loadNotes(currentUserId)
-    messageStore.showMessage(`Записка [${currentUserId ? currentUserId : 'новая'}] сохранена.`)
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
@@ -49,13 +57,13 @@ async function saveNote() {
 }
 
 async function deleteNote() {
-  const noteId = currentNote.value?.id
+  const currentNoteId = currentNote.value?.id
   const currentUserId = authStore.currentUser?.id
 
   try {
-    await noteStore.deleteNote(noteId)
+    await noteStore.deleteNote(currentNoteId)
     await noteStore.loadNotes(currentUserId)
-    messageStore.showMessage(`Записка [${noteId}] удалена.`)
+    messageStore.showMessage(`Заметка #${currentNoteId} удалена.`)
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
@@ -106,7 +114,7 @@ async function deleteNote() {
 .user-note-grid {
   display: grid;
   grid-template-columns: 1fr auto auto;
-  grid-template-rows: auto auto;
+  grid-template-rows: var(--icon-button-size) auto;
   column-gap: var(--grid-inner-gap);
   row-gap: var(--grid-inner-gap);
 }
@@ -114,6 +122,8 @@ async function deleteNote() {
 .user-note-textarea {
   grid-column-start: 1;
   grid-column-end: 4;
+  resize: vertical;
+  min-height: 43.4px;
 }
 
 .add-user-note-button,

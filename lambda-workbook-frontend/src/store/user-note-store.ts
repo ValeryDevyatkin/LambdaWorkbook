@@ -11,17 +11,17 @@ export const useUserNoteStore = defineStore('user-note', () => {
     notes.value = new Array<UserNoteDto | null>(null).concat(loadedNotes)
   }
 
-  async function saveNote(note: UserNoteDto) {
-    if (note.id) {
-      await apiClient.updateUserNote(note)
-    } else {
-      await apiClient.createUserNote(note)
-    }
+  async function updateNote(note: UserNoteDto) {
+    await apiClient.updateUserNote(note)
+  }
+
+  async function createNote(note: UserNoteDto) {
+    return await apiClient.createUserNote(note)
   }
 
   async function deleteNote(noteId?: number) {
     await apiClient.deleteUserNote(noteId ?? -1)
   }
 
-  return { notes, loadNotes, saveNote, deleteNote }
+  return { notes, loadNotes, createNote, updateNote, deleteNote }
 })
