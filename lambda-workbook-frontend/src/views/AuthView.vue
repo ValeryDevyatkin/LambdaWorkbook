@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import CustomButton from '@/components/CustomButton.vue'
 import CustomLabel from '@/components/CustomLabel.vue'
+import CustomTooltip from '@/components/CustomTooltip.vue'
 import { useAuthStore } from '@/store/auth-store'
 import { useUserMessageStore } from '@/store/user-message-store'
 import { computed, ref } from 'vue'
@@ -76,8 +77,22 @@ function startRegister() {
   </div>
 
   <div v-if="authStore.isAuthorized" class="authorized-grid">
+    <CustomTooltip class="icon-button" text="Чат">
+      <RouterLink to="/chat">
+        <img src="..\assets\icons\chat-50.png" />
+      </RouterLink>
+    </CustomTooltip>
+    <CustomTooltip class="icon-button" text="Заметки">
+      <RouterLink to="/notes">
+        <img src="..\assets\icons\notes-32.png" />
+      </RouterLink>
+    </CustomTooltip>
     <CustomLabel v-bind:text="authStore.currentUser?.login ?? ''" />
-    <CustomButton @click="authStore.logOut" text="Выход" />
+    <CustomTooltip class="icon-button" text="Выход">
+      <button class="icon-button" @click="authStore.logOut">
+        <img src="..\assets\icons\logout-50.png" />
+      </button>
+    </CustomTooltip>
   </div>
 
   <div v-if="isLogInMode" class="login-grid">
@@ -122,7 +137,7 @@ function startRegister() {
 
 .authorized-grid {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto auto auto auto;
   column-gap: var(--grid-inner-gap);
 }
 

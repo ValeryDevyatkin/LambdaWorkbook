@@ -24,9 +24,29 @@ const router = createRouter({
       component: () => import('../views/tabs/Page4View.vue'),
     },
     {
+      path: '/page5',
+      name: 'page5',
+      component: () => import('../views/tabs/Page5View.vue'),
+    },
+    {
+      path: '/page6',
+      name: 'page6',
+      component: () => import('../views/tabs/Page6View.vue'),
+    },
+    {
+      path: '/page7',
+      name: 'page7',
+      component: () => import('../views/tabs/Page7View.vue'),
+    },
+    {
       path: '/notes',
       name: 'notes',
       component: () => import('../views/tabs/UserNotes.vue'),
+    },
+    {
+      path: '/chat',
+      name: 'chat',
+      component: () => import('../views/tabs/ChatView.vue'),
     },
   ],
 })

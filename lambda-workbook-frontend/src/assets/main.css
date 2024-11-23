@@ -8,7 +8,7 @@
   --border-thickness: 1px;
   --grid-inner-gap: 5px;
   --grid-outter-gap: 10px;
-  --outter-padding: 20px;
+  --outter-padding: 15px;
   --icon-button-size: 40px;
 
   --view-root-background-color: rgba(105, 168, 92, 0.25);
@@ -88,6 +88,9 @@ h1 {
 .default-input,
 input,
 textarea {
+  display: flex;
+  align-items: center;
+
   background-color: var(--input-background-color);
 
   color: var(--black-color);
@@ -129,12 +132,14 @@ a:hover {
 }
 
 .icon-button,
-.icon-button button {
+.icon-button button,
+.icon-button a {
   width: var(--icon-button-size);
   height: var(--icon-button-size);
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 0;
 }
 
 .icon-button img {

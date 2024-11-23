@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <h1>Вообше не знаю что тут должно быть.</h1>
+  <h1>Качественные реакции</h1>
 </template>
 
 <style scoped></style>

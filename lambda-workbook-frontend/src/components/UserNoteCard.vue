@@ -81,31 +81,23 @@ async function deleteNote() {
 
   <div v-else-if="!currentNote.id" class="user-note-grid">
     <CustomLabel text="Новая заметка" />
-    <CustomTooltip text="Сохранить" class="icon-button">
-      <button @click="saveNote">
-        <img src="..\assets\icons\save-50.png" />
-      </button>
-    </CustomTooltip>
-    <CustomTooltip text="Отмена" class="icon-button">
-      <button @click="cancelAddNote">
-        <img src="..\assets\icons\cancel-50.png" />
-      </button>
-    </CustomTooltip>
+    <button @click="saveNote" class="icon-button">
+      <img src="..\assets\icons\save-50.png" />
+    </button>
+    <button @click="cancelAddNote" class="icon-button">
+      <img src="..\assets\icons\cancel-50.png" />
+    </button>
     <textarea v-model="currentNote.text" class="user-note-textarea"></textarea>
   </div>
 
   <div v-else class="user-note-grid">
     <CustomLabel :text="currentNoteTitle" />
-    <CustomTooltip text="Сохранить" class="icon-button">
-      <button @click="saveNote">
-        <img src="..\assets\icons\save-50.png" />
-      </button>
-    </CustomTooltip>
-    <CustomTooltip text="Удалить" class="icon-button">
-      <button @click="deleteNote">
-        <img src="..\assets\icons\delete-50.png" />
-      </button>
-    </CustomTooltip>
+    <button @click="saveNote" class="icon-button">
+      <img src="..\assets\icons\save-50.png" />
+    </button>
+    <button @click="deleteNote" class="icon-button">
+      <img src="..\assets\icons\delete-50.png" />
+    </button>
     <textarea v-model="currentNote.text" class="user-note-textarea"></textarea>
   </div>
 </template>
