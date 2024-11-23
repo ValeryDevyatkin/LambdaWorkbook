@@ -23,7 +23,6 @@ function addNote() {
 
   const emptyNote = new UserNoteDto({
     userId: currentUserId,
-    id: undefined,
   })
 
   currentNote.value = emptyNote

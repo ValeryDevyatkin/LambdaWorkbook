@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LambdaWorkbook.Api.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241119183859_Initial")]
+    [Migration("20241123213941_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -78,6 +78,31 @@ namespace LambdaWorkbook.Api.Persistence.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("IdentityUsers");
+                });
+
+            modelBuilder.Entity("LambdaWorkbook.Api.Domain.Model.UserMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserMessages");
                 });
 
             modelBuilder.Entity("LambdaWorkbook.Api.Domain.Model.UserNote", b =>

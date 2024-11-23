@@ -11,16 +11,19 @@ public class UnitOfWork : IUnitOfWork
     public UnitOfWork(
         AppDbContext context,
         IIdentityUserRepository identityUserRepository,
-        IUserNoteRepository userNoteRepository)
+        IUserNoteRepository userNoteRepository,
+        IUserMessageRepository userMessageRepository)
     {
         _context = context;
 
         IdentityUserRepository = identityUserRepository;
         UserNoteRepository = userNoteRepository;
+        UserMessageRepository = userMessageRepository;
     }
 
     public IIdentityUserRepository IdentityUserRepository { get; }
     public IUserNoteRepository UserNoteRepository { get; }
+    public IUserMessageRepository UserMessageRepository { get; }
 
     public async Task SaveChangesAsync()
     {

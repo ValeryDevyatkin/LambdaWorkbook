@@ -1,5 +1,6 @@
 using LambdaWorkbook.Api;
 using LambdaWorkbook.Api.Application.Features.IdentityUserFeature;
+using LambdaWorkbook.Api.Application.Features.UserMessageFeature;
 using LambdaWorkbook.Api.Application.Features.UserNoteFeature;
 using LambdaWorkbook.Api.Application.Repository;
 using LambdaWorkbook.Api.Application.Repository.Base;
@@ -66,9 +67,11 @@ var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services.AddAutoMapper(typeof(IdentityUserProfile));
     builder.Services.AddAutoMapper(typeof(UserNoteProfile));
+    builder.Services.AddAutoMapper(typeof(UserMessageProfile));
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     builder.Services.AddScoped<IIdentityUserRepository, IdentityUserRepository>();
     builder.Services.AddScoped<IUserNoteRepository, UserNoteRepository>();
+    builder.Services.AddScoped<IUserMessageRepository, UserMessageRepository>();
     builder.Services.AddScoped<IdentityUserService>();
     builder.Services.AddScoped<UserNoteService>();
 }

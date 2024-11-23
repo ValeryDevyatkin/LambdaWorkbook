@@ -13,6 +13,7 @@ public class AppDbContext : DbContext
     public DbSet<IdentityUser> IdentityUsers { get; set; }
     public DbSet<IdentityRole> IdentityRoles { get; set; }
     public DbSet<UserNote> UserNotes { get; set; }
+    public DbSet<UserMessage> UserMessages { get; set; }
 
     public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

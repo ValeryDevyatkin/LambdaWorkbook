@@ -127,6 +127,96 @@ export class Client extends ClientBase {
     /**
      * @return OK
      */
+    getUserMessages(): Promise<UserMessageDto[]> {
+        let url_ = this.baseUrl + "/api/usermessage";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGetUserMessages(_response);
+        });
+    }
+
+    protected processGetUserMessages(response: Response): Promise<UserMessageDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(UserMessageDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<UserMessageDto[]>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    createUserMessage(body: UserMessageDto | undefined): Promise<UserNoteDto> {
+        let url_ = this.baseUrl + "/api/usermessage";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processCreateUserMessage(_response);
+        });
+    }
+
+    protected processCreateUserMessage(response: Response): Promise<UserNoteDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = UserNoteDto.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<UserNoteDto>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
     getUserNotes(userId: number): Promise<UserNoteDto[]> {
         let url_ = this.baseUrl + "/api/usernote/{userId}";
         if (userId === undefined || userId === null)
@@ -466,10 +556,58 @@ export interface IRegisterPublicUserRequest {
     password?: string | undefined;
 }
 
-export class UserNoteDto implements IUserNoteDto {
-    id?: number;
-    userId?: number | undefined;
+export class UserMessageDto implements IUserMessageDto {
+    id?: number | undefined;
     text?: string | undefined;
+    userId?: number;
+    userLogin?: string | undefined;
+
+    constructor(data?: IUserMessageDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.text = _data["text"];
+            this.userId = _data["userId"];
+            this.userLogin = _data["userLogin"];
+        }
+    }
+
+    static fromJS(data: any): UserMessageDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserMessageDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["text"] = this.text;
+        data["userId"] = this.userId;
+        data["userLogin"] = this.userLogin;
+        return data;
+    }
+}
+
+export interface IUserMessageDto {
+    id?: number | undefined;
+    text?: string | undefined;
+    userId?: number;
+    userLogin?: string | undefined;
+}
+
+export class UserNoteDto implements IUserNoteDto {
+    id?: number | undefined;
+    text?: string | undefined;
+    userId?: number;
 
     constructor(data?: IUserNoteDto) {
         if (data) {
@@ -483,8 +621,8 @@ export class UserNoteDto implements IUserNoteDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.userId = _data["userId"];
             this.text = _data["text"];
+            this.userId = _data["userId"];
         }
     }
 
@@ -498,16 +636,16 @@ export class UserNoteDto implements IUserNoteDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["userId"] = this.userId;
         data["text"] = this.text;
+        data["userId"] = this.userId;
         return data;
     }
 }
 
 export interface IUserNoteDto {
-    id?: number;
-    userId?: number | undefined;
+    id?: number | undefined;
     text?: string | undefined;
+    userId?: number;
 }
 
 export class ApiException extends Error {
