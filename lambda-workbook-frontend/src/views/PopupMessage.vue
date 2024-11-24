@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { useUserMessageStore } from '@/store/user-message-store'
+import { usePopupMessageStore } from '@/store/popup-message-store'
 
-const messageStore = useUserMessageStore()
+const popupStore = usePopupMessageStore()
 </script>
 
 <template>
   <div
-    @click="messageStore.hideMessage"
+    @click="popupStore.hideMessage"
     class="user-message"
     :class="{
-      'user-message-hidden': messageStore.isHidden,
-      'user-message-error': messageStore.isError,
+      'user-message-hidden': popupStore.isHidden,
+      'user-message-error': popupStore.isError,
     }"
   >
-    {{ messageStore.message }}
+    {{ popupStore.message }}
   </div>
 </template>
 

@@ -1,32 +1,19 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { UserMessageDto } from '@/api/client'
+import { apiClient } from '@/api/client-provider'
 
 export const useUserMessageStore = defineStore('user-message', () => {
-  const message = ref('')
-  const isHidden = ref(true)
-  const isError = ref(false)
+  const messages = ref<Array<UserMessageDto>>([])
 
-  function show(msg: string, isEror: boolean) {
-    message.value = msg
-    isHidden.value = false
-    isError.value = isEror
-
-    setTimeout(hideMessage, 9999)
+  async function loadMessages() {
+    const loadedMessages = await apiClient.getUserMessages()
+    messages.value = loadedMessages
   }
 
-  function showMessage(msg: string) {
-    show(msg, false)
+  async function createMessage(message: UserMessageDto) {
+    return await apiClient.createUserMessage(message)
   }
 
-  function showEror(msg: string) {
-    show(msg, true)
-  }
-
-  function hideMessage() {
-    message.value = ''
-    isHidden.value = true
-    isError.value = false
-  }
-
-  return { isHidden, isError, message, showMessage, showEror, hideMessage }
+  return { messages, loadMessages, createMessage }
 })

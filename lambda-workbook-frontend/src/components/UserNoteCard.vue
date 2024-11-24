@@ -5,11 +5,11 @@ import CustomTooltip from './CustomTooltip.vue'
 import { useAuthStore } from '@/store/auth-store'
 import { useUserNoteStore } from '@/store/user-note-store'
 import CustomLabel from './CustomLabel.vue'
-import { useUserMessageStore } from '@/store/user-message-store'
+import { usePopupMessageStore } from '@/store/popup-message-store'
 
 const authStore = useAuthStore()
 const noteStore = useUserNoteStore()
-const messageStore = useUserMessageStore()
+const popupStore = usePopupMessageStore()
 
 const props = defineProps<{
   userNote: UserNoteDto | null
@@ -34,39 +34,37 @@ function cancelAddNote() {
 
 async function saveNote() {
   if (currentNote.value === null) return
-  const currentUserId = authStore.currentUser?.id
   const currentNoteId = currentNote.value?.id
 
   try {
     if (currentNoteId) {
       await noteStore.updateNote(currentNote.value)
-      messageStore.showMessage(`Заметка #${currentNoteId} обновлена.`)
+      popupStore.showMessage(`Заметка #${currentNoteId} обновлена.`)
     } else {
       const createdNote = await noteStore.createNote(currentNote.value)
       cancelAddNote()
-      messageStore.showMessage(`Новая заметка #${createdNote.id} сохранена.`)
+      popupStore.showMessage(`Новая заметка #${createdNote.id} сохранена.`)
     }
 
-    await noteStore.loadNotes(currentUserId)
+    noteStore.setReloadNotes()
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    messageStore.showEror(error?.response)
+    popupStore.showEror(error?.response)
   }
 }
 
 async function deleteNote() {
   const currentNoteId = currentNote.value?.id
-  const currentUserId = authStore.currentUser?.id
 
   try {
     await noteStore.deleteNote(currentNoteId)
-    await noteStore.loadNotes(currentUserId)
-    messageStore.showMessage(`Заметка #${currentNoteId} удалена.`)
+    popupStore.showMessage(`Заметка #${currentNoteId} удалена.`)
+    noteStore.setReloadNotes()
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    messageStore.showEror(error?.response)
+    popupStore.showEror(error?.response)
   }
 }
 </script>

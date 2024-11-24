@@ -5,10 +5,16 @@ import { apiClient } from '@/api/client-provider'
 
 export const useUserNoteStore = defineStore('user-note', () => {
   const notes = ref<Array<UserNoteDto | null>>([null])
+  const shouldReloadNotes = ref<boolean>(false)
+
+  function setReloadNotes() {
+    shouldReloadNotes.value = true
+  }
 
   async function loadNotes(userId?: number) {
     const loadedNotes = await apiClient.getUserNotes(userId ?? -1)
     notes.value = new Array<UserNoteDto | null>(null).concat(loadedNotes)
+    shouldReloadNotes.value = false
   }
 
   async function updateNote(note: UserNoteDto) {
@@ -23,5 +29,13 @@ export const useUserNoteStore = defineStore('user-note', () => {
     await apiClient.deleteUserNote(noteId ?? -1)
   }
 
-  return { notes, loadNotes, createNote, updateNote, deleteNote }
+  return {
+    notes,
+    shouldReloadNotes,
+    loadNotes,
+    createNote,
+    updateNote,
+    deleteNote,
+    setReloadNotes,
+  }
 })

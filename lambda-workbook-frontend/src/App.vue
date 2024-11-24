@@ -2,14 +2,14 @@
 import { RouterView } from 'vue-router'
 import HeaderView from './views/HeaderView.vue'
 import SidebarView from './views/SidebarView.vue'
-import UserMessage from './views/UserMessage.vue'
+import PopupMessage from './views/PopupMessage.vue'
 </script>
 
 <template>
   <div class="app-grid">
     <div class="top-header-root">
       <HeaderView class="view-root" />
-      <UserMessage />
+      <PopupMessage />
     </div>
 
     <SidebarView class="view-root" />

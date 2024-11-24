@@ -3,11 +3,11 @@ import CustomButton from '@/components/CustomButton.vue'
 import CustomLabel from '@/components/CustomLabel.vue'
 import CustomTooltip from '@/components/CustomTooltip.vue'
 import { useAuthStore } from '@/store/auth-store'
-import { useUserMessageStore } from '@/store/user-message-store'
+import { usePopupMessageStore } from '@/store/popup-message-store'
 import { computed, ref } from 'vue'
 
 const authStore = useAuthStore()
-const messageStore = useUserMessageStore()
+const popupStore = usePopupMessageStore()
 
 const login = ref('')
 const password = ref('')
@@ -23,11 +23,11 @@ async function logIn() {
   try {
     await authStore.logIn(login.value, password.value)
     cancelLogIn()
-    messageStore.showMessage('Успешный вход.')
+    popupStore.showMessage('Успешный вход.')
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    messageStore.showEror(error?.response)
+    popupStore.showEror(error?.response)
   }
 }
 
@@ -37,11 +37,11 @@ async function register() {
     cancelRegister()
     login.value = user.login ?? ''
     startLogIn()
-    messageStore.showMessage('Пользователь создан.')
+    popupStore.showMessage('Пользователь создан.')
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    messageStore.showEror(error?.response)
+    popupStore.showEror(error?.response)
   }
 }
 

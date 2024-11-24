@@ -1,44 +1,41 @@
 <script setup lang="ts">
 import UserNoteCard from '@/components/UserNoteCard.vue'
 import { useAuthStore } from '@/store/auth-store'
+import { useHeightNormalizerStore } from '@/store/height-normalizer-store'
 import { useUserNoteStore } from '@/store/user-note-store'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 
 const authStore = useAuthStore()
 const noteStore = useUserNoteStore()
-const isLoading = ref(true)
-const maxHeight = ref<number | undefined>(undefined)
+const heightStore = useHeightNormalizerStore()
 const isAuthorized = computed(() => authStore.isAuthorized)
-
-function calculateContentHeight() {
-  isLoading.value = true
-  const tabContent = document.getElementById('tab-content-template')
-  maxHeight.value = tabContent?.offsetHeight
-  isLoading.value = false
-}
+const shouldReloadNotes = computed(() => noteStore.shouldReloadNotes)
 
 async function loadNotes() {
+  const currentUserId = authStore.currentUser?.id
+  await noteStore.loadNotes(currentUserId)
+}
+
+async function calculateHeightAndLoadNotes(delay: number) {
   if (isAuthorized.value) {
-    const currentUserId = authStore.currentUser?.id
-    await noteStore.loadNotes(currentUserId)
+    heightStore.calculateContentHeight(delay)
+    await loadNotes()
+  } else {
+    heightStore.resetMaxHeight()
   }
 }
 
 onMounted(async () => {
-  calculateContentHeight()
-  await loadNotes()
+  await calculateHeightAndLoadNotes(0)
 })
 
 watch(isAuthorized, async () => {
-  if (isAuthorized.value) {
-    isLoading.value = true
+  await calculateHeightAndLoadNotes(100)
+})
 
-    setTimeout(async () => {
-      calculateContentHeight()
-      await loadNotes()
-    }, 300)
-  } else {
-    maxHeight.value = undefined
+watch(shouldReloadNotes, async () => {
+  if (shouldReloadNotes.value) {
+    await calculateHeightAndLoadNotes(0)
   }
 })
 </script>
@@ -46,14 +43,14 @@ watch(isAuthorized, async () => {
 <template>
   <div class="tab-content-root">
     <h1>Заметки</h1>
-    <div v-if="isLoading" class="tab-content" id="tab-content-template">
+    <div v-if="heightStore.isCalculating" class="tab-content" id="tab-content-template">
       <div class="center-message">Загрузка...</div>
     </div>
     <div
       v-else
       class="tab-content"
       :style="{
-        height: maxHeight ? `${maxHeight}px` : 'unset',
+        height: heightStore.maxHeightString,
       }"
     >
       <div v-if="isAuthorized" class="user-notes-grid">
