@@ -127,7 +127,7 @@ export class Client extends ClientBase {
     /**
      * @return OK
      */
-    getUserMessages(): Promise<UserMessageDto[]> {
+    getUserMessages(): Promise<UserMessageItemDto[]> {
         let url_ = this.baseUrl + "/api/usermessage";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -145,7 +145,7 @@ export class Client extends ClientBase {
         });
     }
 
-    protected processGetUserMessages(response: Response): Promise<UserMessageDto[]> {
+    protected processGetUserMessages(response: Response): Promise<UserMessageItemDto[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -155,7 +155,7 @@ export class Client extends ClientBase {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(UserMessageDto.fromJS(item));
+                    result200!.push(UserMessageItemDto.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -167,7 +167,7 @@ export class Client extends ClientBase {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<UserMessageDto[]>(null as any);
+        return Promise.resolve<UserMessageItemDto[]>(null as any);
     }
 
     /**
@@ -560,9 +560,53 @@ export class UserMessageDto implements IUserMessageDto {
     id?: number | undefined;
     text?: string | undefined;
     userId?: number;
-    userLogin?: string | undefined;
 
     constructor(data?: IUserMessageDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.text = _data["text"];
+            this.userId = _data["userId"];
+        }
+    }
+
+    static fromJS(data: any): UserMessageDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserMessageDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["text"] = this.text;
+        data["userId"] = this.userId;
+        return data;
+    }
+}
+
+export interface IUserMessageDto {
+    id?: number | undefined;
+    text?: string | undefined;
+    userId?: number;
+}
+
+export class UserMessageItemDto implements IUserMessageItemDto {
+    id?: number;
+    text?: string | undefined;
+    userId?: number;
+    userLogin?: string | undefined;
+
+    constructor(data?: IUserMessageItemDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -580,9 +624,9 @@ export class UserMessageDto implements IUserMessageDto {
         }
     }
 
-    static fromJS(data: any): UserMessageDto {
+    static fromJS(data: any): UserMessageItemDto {
         data = typeof data === 'object' ? data : {};
-        let result = new UserMessageDto();
+        let result = new UserMessageItemDto();
         result.init(data);
         return result;
     }
@@ -597,8 +641,8 @@ export class UserMessageDto implements IUserMessageDto {
     }
 }
 
-export interface IUserMessageDto {
-    id?: number | undefined;
+export interface IUserMessageItemDto {
+    id?: number;
     text?: string | undefined;
     userId?: number;
     userLogin?: string | undefined;

@@ -74,6 +74,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IUserMessageRepository, UserMessageRepository>();
     builder.Services.AddScoped<IdentityUserService>();
     builder.Services.AddScoped<UserNoteService>();
+    builder.Services.AddScoped<UserMessageService>();
 }
 
 // Default

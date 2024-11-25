@@ -99,6 +99,8 @@ namespace LambdaWorkbook.Api.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("UserMessages");
                 });
 
@@ -137,6 +139,17 @@ namespace LambdaWorkbook.Api.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("LambdaWorkbook.Api.Domain.Model.UserMessage", b =>
+                {
+                    b.HasOne("LambdaWorkbook.Api.Domain.Model.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

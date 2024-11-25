@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import CalculatedTabContent from '@/components/CalculatedTabContent.vue'
 import UserNoteCard from '@/components/UserNoteCard.vue'
 import { useAuthStore } from '@/store/auth-store'
 import { useHeightNormalizerStore } from '@/store/height-normalizer-store'
@@ -16,7 +17,7 @@ async function loadNotes() {
   await noteStore.loadNotes(currentUserId)
 }
 
-async function calculateHeightAndLoadNotes(delay: number) {
+async function calculateHeightAndLoadNotes(delay: number = 0) {
   if (isAuthorized.value) {
     heightStore.calculateContentHeight(delay)
     await loadNotes()
@@ -26,7 +27,7 @@ async function calculateHeightAndLoadNotes(delay: number) {
 }
 
 onMounted(async () => {
-  await calculateHeightAndLoadNotes(0)
+  await calculateHeightAndLoadNotes()
 })
 
 watch(isAuthorized, async () => {
@@ -35,7 +36,7 @@ watch(isAuthorized, async () => {
 
 watch(shouldReloadNotes, async () => {
   if (shouldReloadNotes.value) {
-    await calculateHeightAndLoadNotes(0)
+    await calculateHeightAndLoadNotes()
   }
 })
 </script>
@@ -43,21 +44,12 @@ watch(shouldReloadNotes, async () => {
 <template>
   <div class="tab-content-root">
     <h1>Заметки</h1>
-    <div v-if="heightStore.isCalculating" class="tab-content" id="tab-content-template">
-      <div class="center-message">Загрузка...</div>
-    </div>
-    <div
-      v-else
-      class="tab-content"
-      :style="{
-        height: heightStore.maxHeightString,
-      }"
-    >
+    <CalculatedTabContent>
       <div v-if="isAuthorized" class="user-notes-grid">
         <UserNoteCard v-for="note in noteStore.notes" :key="note?.id" :user-note="note" />
       </div>
       <div v-else class="center-message">Войдите, чтобы просмотреть</div>
-    </div>
+    </CalculatedTabContent>
   </div>
 </template>
 

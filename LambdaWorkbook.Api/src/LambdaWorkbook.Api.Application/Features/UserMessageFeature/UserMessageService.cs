@@ -19,12 +19,12 @@ public class UserMessageService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<OperationResponse<IEnumerable<UserMessageDto>>> GetAllAsync()
+    public async Task<OperationResponse<IEnumerable<UserMessageItemDto>>> GetAllAsync()
     {
-        var models = await _unitOfWork.UserMessageRepository.GetAsync();
-        var dtos = _mapper.Map<IEnumerable<UserMessageDto>>(models);
+        var models = await _unitOfWork.UserMessageRepository.GetAllAsync();
+        var dtos = _mapper.Map<IEnumerable<UserMessageItemDto>>(models);
 
-        return OperationResponse<IEnumerable<UserMessageDto>>.Success(dtos);
+        return OperationResponse<IEnumerable<UserMessageItemDto>>.Success(dtos);
     }
 
     public async Task<OperationResponse<UserMessageDto>> CreateAsync(UserMessageDto dto)

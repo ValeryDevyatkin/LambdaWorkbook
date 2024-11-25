@@ -9,4 +9,5 @@ public class UserMessage : ModelBase<int>
 
     [Required]
     public int UserId { get; set; }
+    public IdentityUser? User { get; set; }
 }

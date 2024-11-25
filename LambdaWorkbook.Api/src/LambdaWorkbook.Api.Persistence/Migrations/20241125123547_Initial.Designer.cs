@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LambdaWorkbook.Api.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241123213941_Initial")]
+    [Migration("20241125123547_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -102,6 +102,8 @@ namespace LambdaWorkbook.Api.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("UserMessages");
                 });
 
@@ -140,6 +142,17 @@ namespace LambdaWorkbook.Api.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("LambdaWorkbook.Api.Domain.Model.UserMessage", b =>
+                {
+                    b.HasOne("LambdaWorkbook.Api.Domain.Model.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

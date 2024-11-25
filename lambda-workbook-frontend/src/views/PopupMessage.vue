@@ -30,7 +30,7 @@ const popupStore = usePopupMessageStore()
   padding: 10px 40px;
   margin-left: 10px;
   right: 10px;
-  max-width: 300px;
+  max-width: 500px;
 
   animation: green-pulse 2s infinite alternate-reverse;
 }

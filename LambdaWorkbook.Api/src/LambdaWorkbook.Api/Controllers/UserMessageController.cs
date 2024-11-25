@@ -18,7 +18,7 @@ public class UserMessageController : ApiControllerBase
     }
 
     [HttpGet(Name = "GetUserMessages")]
-    public async Task<ActionResult<IEnumerable<UserMessageDto>>> Get()
+    public async Task<ActionResult<IEnumerable<UserMessageItemDto>>> Get()
     {
         try
         {
