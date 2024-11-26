@@ -2,13 +2,17 @@
 import { useAuthStore } from '@/store/auth-store'
 import { useHeightNormalizerStore } from '@/store/height-normalizer-store'
 
+const props = defineProps<{
+  shouldAuthorize?: boolean
+}>()
+
 const heightStore = useHeightNormalizerStore()
 const authStore = useAuthStore()
 </script>
 
 <template>
   <div
-    v-if="heightStore.isCalculating && authStore.isAuthorized"
+    v-if="heightStore.isCalculating && (authStore.isAuthorized || !props.shouldAuthorize)"
     class="tab-content"
     id="tab-content-template"
   >

@@ -6,14 +6,14 @@ export const useHeightNormalizerStore = defineStore('height-normalizer', () => {
   const maxHeight = ref<number | undefined>(undefined)
   const maxHeightString = computed(() => (maxHeight.value ? `${maxHeight.value}px` : 'unset'))
 
-  function calculateContentHeight(delay: number) {
+  function calculateContentHeight(delay?: number) {
     isCalculating.value = true
 
     setTimeout(() => {
       const tabContent = document.getElementById('tab-content-template')
       maxHeight.value = tabContent?.offsetHeight
       isCalculating.value = false
-    }, delay)
+    }, delay ?? 0)
   }
 
   function resetMaxHeight() {

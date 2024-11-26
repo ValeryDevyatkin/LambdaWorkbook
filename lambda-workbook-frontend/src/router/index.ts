@@ -39,6 +39,11 @@ const router = createRouter({
       component: () => import('../views/tabs/Page7View.vue'),
     },
     {
+      path: '/page8',
+      name: 'page8',
+      component: () => import('../views/tabs/Page8View.vue'),
+    },
+    {
       path: '/notes',
       name: 'notes',
       component: () => import('../views/tabs/UserNotes.vue'),

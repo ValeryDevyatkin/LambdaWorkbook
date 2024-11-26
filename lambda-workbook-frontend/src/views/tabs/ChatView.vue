@@ -59,7 +59,7 @@ watch(isAuthorized, async () => {
 <template>
   <div class="tab-content-root chat-tab-content-root">
     <h1>Чат</h1>
-    <CalculatedTabContent>
+    <CalculatedTabContent should-authorize>
       <div v-if="isAuthorized" class="chat-grid">
         <div class="chat-message-grid">
           <UserMessageCard

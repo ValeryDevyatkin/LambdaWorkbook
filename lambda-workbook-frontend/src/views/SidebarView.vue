@@ -13,6 +13,7 @@ import { RouterLink } from 'vue-router'
       <RouterLink to="/page5">Химическое равновесие</RouterLink>
       <RouterLink to="/page6">Справочник</RouterLink>
       <RouterLink to="/page7">Использование таблиц</RouterLink>
+      <RouterLink to="/page8">Решение задач</RouterLink>
     </nav>
   </div>
 </template>

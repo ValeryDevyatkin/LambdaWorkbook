@@ -44,7 +44,7 @@ watch(shouldReloadNotes, async () => {
 <template>
   <div class="tab-content-root">
     <h1>Заметки</h1>
-    <CalculatedTabContent>
+    <CalculatedTabContent should-authorize>
       <div v-if="isAuthorized" class="user-notes-grid">
         <UserNoteCard v-for="note in noteStore.notes" :key="note?.id" :user-note="note" />
       </div>
