@@ -21,7 +21,7 @@ import { RouterLink } from 'vue-router'
 .nav-list a {
   display: block;
   font-weight: bold;
-  font-size: large;
+  font-size: var(--large-font-size);
   padding: 10px;
   margin: 10px 0;
 

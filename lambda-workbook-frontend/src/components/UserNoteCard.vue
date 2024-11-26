@@ -117,7 +117,8 @@ async function deleteNote() {
 
 .add-user-note-button,
 .add-user-note-button button {
-  width: 100px;
-  height: 100px;
+  --box-element-size: 100px;
+  width: var(--box-element-size);
+  height: var(--box-element-size);
 }
 </style>

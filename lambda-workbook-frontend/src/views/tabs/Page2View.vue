@@ -1,7 +1,10 @@
 <script setup lang="ts"></script>
 
 <template>
-  <h1>Качественные реакции</h1>
+  <div class="tab-content-root">
+    <h1>Качественные реакции</h1>
+    <div class="tab-content"></div>
+  </div>
 </template>
 
 <style scoped></style>

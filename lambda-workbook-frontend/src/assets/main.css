@@ -1,6 +1,8 @@
 :root {
   --font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   --regular-font-size: medium;
+  --large-font-size: large;
+  --heading-large-font-size: xx-large;
 
   --small-border-radius: 3px;
   --border-radius: 10px;
@@ -69,7 +71,7 @@ body,
 
 h1 {
   margin: 0;
-  font-size: xx-large;
+  font-size: var(--heading-large-font-size);
   text-decoration: none;
 
   color: var(--black-color);
