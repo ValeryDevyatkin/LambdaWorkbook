@@ -31,6 +31,7 @@ const popupStore = usePopupMessageStore()
   margin-left: 10px;
   right: 10px;
   max-width: 500px;
+  z-index: 998;
 
   animation: green-pulse 2s infinite alternate-reverse;
 }

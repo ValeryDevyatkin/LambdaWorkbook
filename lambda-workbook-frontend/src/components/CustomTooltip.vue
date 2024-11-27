@@ -27,10 +27,10 @@ const props = defineProps<{
   padding: 10px;
   border-radius: var(--border-radius);
 
+  z-index: 999;
   position: absolute;
   top: 100%;
   right: 0;
-  z-index: 1;
 
   text-decoration: none;
   font-size: var(--regular-font-size);
