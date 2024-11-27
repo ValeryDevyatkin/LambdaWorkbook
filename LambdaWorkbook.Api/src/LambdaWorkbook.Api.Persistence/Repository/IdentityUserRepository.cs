@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LambdaWorkbook.Api.Persistence.Repository;
 
-public class IdentityUserRepository : RepositoryBase<IdentityUser>, IIdentityUserRepository
+public class IdentityUserRepository : RepositoryBase<IdentityUser, int>, IIdentityUserRepository
 {
     public IdentityUserRepository(AppDbContext context) : base(context)
     {

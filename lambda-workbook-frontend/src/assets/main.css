@@ -53,16 +53,6 @@ body,
   padding: var(--outter-padding);
 }
 
-.tab-content {
-  box-sizing: border-box;
-  overflow: auto;
-
-  padding: var(--outter-padding);
-  background-color: var(--tab-content-background-color);
-  border-radius: var(--border-radius);
-  border: var(--border-thickness) solid var(--black-color);
-}
-
 .tab-content-root {
   display: grid;
   grid-template-rows: auto 1fr;

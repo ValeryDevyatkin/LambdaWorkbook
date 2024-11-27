@@ -5,7 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LambdaWorkbook.Api.Persistence.Repository.Base;
 
-public abstract class RepositoryBase<T> : IRepository<T> where T : ModelBase
+public abstract class RepositoryBase<T, TKey> : IRepository<T>
+    where T : ModelBase<TKey>
+    where TKey: struct
 {
     protected AppDbContext Context { get; }
 
@@ -49,6 +51,12 @@ public abstract class RepositoryBase<T> : IRepository<T> where T : ModelBase
 
     public async Task UpdateAsync(T item)
     {
+        var dbItem = await Context.Set<T>()
+            .AsNoTracking()
+            .SingleAsync(x => x.Id.Equals(item.Id));
+
+        item.CreatedAt = dbItem?.CreatedAt ?? DateTime.MinValue;
+
         Context.Entry(item).State = EntityState.Modified;
         await Context.SaveChangesAsync();
     }

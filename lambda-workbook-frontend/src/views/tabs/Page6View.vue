@@ -1,14 +1,6 @@
 <script setup lang="ts">
 import CalculatedTabContent from '@/components/CalculatedTabContent.vue'
 import ChemElementInfoBlock from '@/components/ChemElementInfoBlock.vue'
-import { useHeightNormalizerStore } from '@/store/height-normalizer-store'
-import { onMounted } from 'vue'
-
-const heightStore = useHeightNormalizerStore()
-
-onMounted(() => {
-  heightStore.calculateContentHeight()
-})
 </script>
 
 <template>

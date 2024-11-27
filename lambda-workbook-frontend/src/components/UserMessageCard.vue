@@ -18,7 +18,10 @@ const props = defineProps<{
 <style scoped>
 .user-message-grid {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto 300px;
   column-gap: var(--grid-inner-gap);
+}
+.user-message-grid div {
+  overflow: auto;
 }
 </style>

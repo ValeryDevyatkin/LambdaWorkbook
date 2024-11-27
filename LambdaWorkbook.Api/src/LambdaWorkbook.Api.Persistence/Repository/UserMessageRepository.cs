@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LambdaWorkbook.Api.Persistence.Repository;
 
-public class UserMessageRepository : RepositoryBase<UserMessage>, IUserMessageRepository
+public class UserMessageRepository : RepositoryBase<UserMessage, int>, IUserMessageRepository
 {
     public UserMessageRepository(AppDbContext context) : base(context)
     {

@@ -2,14 +2,12 @@
 import CalculatedTabContent from '@/components/CalculatedTabContent.vue'
 import UserMessageCard from '@/components/UserMessageCard.vue'
 import { useAuthStore } from '@/store/auth-store'
-import { useHeightNormalizerStore } from '@/store/height-normalizer-store'
 import { usePopupMessageStore } from '@/store/popup-message-store'
 import { useUserMessageStore } from '@/store/user-message-store'
 import { computed, onMounted, ref, watch } from 'vue'
 
 const authStore = useAuthStore()
 const messageStore = useUserMessageStore()
-const heightStore = useHeightNormalizerStore()
 const popupStore = usePopupMessageStore()
 const isAuthorized = computed(() => authStore.isAuthorized)
 const chatMessage = ref<string | null>(null)
@@ -20,7 +18,7 @@ async function sendMessage() {
 
   try {
     await messageStore.createMessage(chatMessageComputed.value, currentUserId)
-    await calculateHeightAndLoadMessages()
+    await loadMessages()
     chatMessage.value = null
     popupStore.showMessage('Сообщение отправлено.')
 
@@ -37,29 +35,26 @@ function scrollToLatestMessage(delay: number) {
   }, delay)
 }
 
-async function calculateHeightAndLoadMessages(delay: number = 0) {
+async function loadMessages(delay: number = 0) {
   if (isAuthorized.value) {
-    heightStore.calculateContentHeight(delay)
     await messageStore.loadMessages()
     scrollToLatestMessage(delay)
-  } else {
-    heightStore.resetMaxHeight()
   }
 }
 
 onMounted(async () => {
-  await calculateHeightAndLoadMessages()
+  await loadMessages()
 })
 
 watch(isAuthorized, async () => {
-  await calculateHeightAndLoadMessages(100)
+  await loadMessages(100)
 })
 </script>
 
 <template>
   <div class="tab-content-root chat-tab-content-root">
     <h1>Чат</h1>
-    <CalculatedTabContent should-authorize>
+    <CalculatedTabContent>
       <div v-if="isAuthorized" class="chat-grid">
         <div class="chat-message-grid">
           <UserMessageCard
@@ -86,7 +81,7 @@ watch(isAuthorized, async () => {
 
 <style scoped>
 .chat-tab-content-root {
-  max-width: 400px;
+  max-width: 500px;
 }
 
 .chat-grid {

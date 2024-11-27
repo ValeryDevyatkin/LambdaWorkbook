@@ -7,6 +7,7 @@ public abstract class ModelBase
 }
 
 public abstract class ModelBase<T> : ModelBase
+    where T: struct
 {
     public required T Id { get; set; }
 }

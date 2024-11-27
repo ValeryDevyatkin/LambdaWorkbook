@@ -17,6 +17,7 @@ const props = defineProps<{
 
 const currentNote = ref<UserNoteDto | null>(props.userNote)
 const currentNoteTitle = computed(() => `Заметка #${currentNote.value?.id}`)
+const noteText = computed(() => currentNote.value?.text?.trim())
 
 function addNote() {
   const currentUserId = authStore.currentUser?.id
@@ -35,6 +36,7 @@ function cancelAddNote() {
 async function saveNote() {
   if (currentNote.value === null) return
   const currentNoteId = currentNote.value?.id
+  currentNote.value.text = noteText.value
 
   try {
     if (currentNoteId) {
@@ -45,8 +47,6 @@ async function saveNote() {
       cancelAddNote()
       popupStore.showMessage(`Новая заметка #${createdNote.id} сохранена.`)
     }
-
-    noteStore.setReloadNotes()
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
@@ -60,7 +60,6 @@ async function deleteNote() {
   try {
     await noteStore.deleteNote(currentNoteId)
     popupStore.showMessage(`Заметка #${currentNoteId} удалена.`)
-    noteStore.setReloadNotes()
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
@@ -78,7 +77,7 @@ async function deleteNote() {
 
   <div v-else-if="!currentNote.id" class="user-note-grid">
     <CustomLabel text="Новая заметка" />
-    <button @click="saveNote" class="icon-button">
+    <button @click="saveNote" class="icon-button" :class="{ disabled: !noteText }">
       <img src="..\assets\icons\save-50.png" />
     </button>
     <button @click="cancelAddNote" class="icon-button">
@@ -89,7 +88,7 @@ async function deleteNote() {
 
   <div v-else class="user-note-grid">
     <CustomLabel :text="currentNoteTitle" />
-    <button @click="saveNote" class="icon-button">
+    <button @click="saveNote" class="icon-button" :class="{ disabled: !noteText }">
       <img src="..\assets\icons\save-50.png" />
     </button>
     <button @click="deleteNote" class="icon-button">

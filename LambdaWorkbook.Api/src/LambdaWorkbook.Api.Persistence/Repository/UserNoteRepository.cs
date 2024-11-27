@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LambdaWorkbook.Api.Persistence.Repository;
 
-public class UserNoteRepository : RepositoryBase<UserNote>, IUserNoteRepository
+public class UserNoteRepository : RepositoryBase<UserNote, int>, IUserNoteRepository
 {
     public UserNoteRepository(AppDbContext context) : base(context)
     {
