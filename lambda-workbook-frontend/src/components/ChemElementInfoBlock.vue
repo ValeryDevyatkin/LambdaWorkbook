@@ -5,12 +5,13 @@ import ChemElementBox from './ChemElementBox.vue'
 const props = defineProps<{
   element: string
   longText?: boolean
+  image?: string
 }>()
 </script>
 
 <template>
   <div class="chem-element-info-block">
-    <ChemElementBox :element="props.element" :long-text="props.longText" />
+    <ChemElementBox :element="props.element" :long-text="props.longText" :image="props.image" />
     <div class="chem-element-info-block-content">
       <slot></slot>
     </div>
