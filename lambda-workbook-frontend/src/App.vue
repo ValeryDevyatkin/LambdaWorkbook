@@ -3,6 +3,7 @@ import { RouterView } from 'vue-router'
 import HeaderView from './views/HeaderView.vue'
 import SidebarView from './views/SidebarView.vue'
 import PopupMessage from './views/PopupMessage.vue'
+import DialogWindow from './views/DialogWindow.vue'
 </script>
 
 <template>
@@ -17,6 +18,8 @@ import PopupMessage from './views/PopupMessage.vue'
     <div class="view-root router-container">
       <RouterView />
     </div>
+
+    <DialogWindow />
   </div>
 </template>
 

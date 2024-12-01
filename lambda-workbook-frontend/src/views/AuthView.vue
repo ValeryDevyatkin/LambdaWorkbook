@@ -3,11 +3,13 @@ import CustomButton from '@/components/CustomButton.vue'
 import CustomLabel from '@/components/CustomLabel.vue'
 import CustomTooltip from '@/components/CustomTooltip.vue'
 import { useAuthStore } from '@/store/auth-store'
+import { useDialogWindowStore } from '@/store/dialog-winow-store'
 import { usePopupMessageStore } from '@/store/popup-message-store'
 import { computed, ref } from 'vue'
 
 const authStore = useAuthStore()
 const popupStore = usePopupMessageStore()
+const dialogStore = useDialogWindowStore()
 
 const login = ref('')
 const password = ref('')
@@ -77,6 +79,16 @@ function startRegister() {
   </div>
 
   <div v-if="authStore.isAuthorized" class="authorized-grid">
+    <CustomTooltip v-if="dialogStore.isOpened" class="icon-button" text="Закрыть таблицу">
+      <button @click="dialogStore.switchIsOpened">
+        <img src="..\assets\icons\cancel-50.png" />
+      </button>
+    </CustomTooltip>
+    <CustomTooltip v-else class="icon-button" text="Таблица">
+      <button @click="dialogStore.switchIsOpened">
+        <img src="..\assets\icons\mendeleev-50.png" />
+      </button>
+    </CustomTooltip>
     <CustomTooltip class="icon-button" text="Чат">
       <RouterLink to="/chat">
         <img src="..\assets\icons\chat-50.png" />
@@ -137,7 +149,7 @@ function startRegister() {
 
 .authorized-grid {
   display: grid;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: auto auto auto auto auto;
   column-gap: var(--grid-inner-gap);
 }
 
