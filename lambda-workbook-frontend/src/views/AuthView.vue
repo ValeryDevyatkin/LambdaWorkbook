@@ -101,7 +101,7 @@ function startRegister() {
     </CustomTooltip>
     <CustomLabel v-bind:text="authStore.currentUser?.login ?? ''" />
     <CustomTooltip class="icon-button" text="Выход">
-      <button class="icon-button" @click="authStore.logOut">
+      <button @click="authStore.logOut">
         <img src="..\assets\icons\logout-50.png" />
       </button>
     </CustomTooltip>

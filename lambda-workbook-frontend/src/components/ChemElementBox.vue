@@ -52,7 +52,7 @@ const boxStyle = computed(() => {
 }
 
 .long-chem-element-box {
-  font-size: 25px;
+  font-size: var(--large-font-size);
   padding: 0;
 
   text-align: unset;
@@ -64,6 +64,6 @@ const boxStyle = computed(() => {
   border: unset;
   height: unset;
 
-  width: 140px;
+  width: 145px;
 }
 </style>

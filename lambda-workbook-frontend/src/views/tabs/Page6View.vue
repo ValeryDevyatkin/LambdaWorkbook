@@ -5,7 +5,7 @@ import ChemElementInfoBlock from '@/components/ChemElementInfoBlock.vue'
 
 <template>
   <div class="tab-content-root">
-    <h1>Справочник веществ и элементов</h1>
+    <h1>Справочник</h1>
     <CalculatedTabContent class="chem-info-table">
       <ChemElementInfoBlock element="H" image="/src/assets/elements/vodorod.jpg">
         <span>Водород</span>
@@ -154,6 +154,7 @@ import ChemElementInfoBlock from '@/components/ChemElementInfoBlock.vue'
         В водном расстворе диссоциирует с образованием трех видов анионов.
       </ChemElementInfoBlock>
       <div>
+        <div class="center-text bold-text">Общая информация</div>
         <ul>
           <li>Солеобразующие оксиды: SO2, SO3, CO2, SiO2, P2O5, N2O5, NO2, Cl2O7, Cl2O3.</li>
           <li>Несолеобразующие оксиды: CO, NO, N2O, SiO.</li>
@@ -190,6 +191,7 @@ import ChemElementInfoBlock from '@/components/ChemElementInfoBlock.vue'
 <style scoped>
 .chem-info-table span {
   font-weight: bold;
+  font-size: var(--navigation-font-size);
 }
 
 .chem-info-table ul {

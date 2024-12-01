@@ -19,11 +19,6 @@ const router = createRouter({
       component: () => import('../views/tabs/Page3View.vue'),
     },
     {
-      path: '/page4',
-      name: 'page4',
-      component: () => import('../views/tabs/Page4View.vue'),
-    },
-    {
       path: '/page5',
       name: 'page5',
       component: () => import('../views/tabs/Page5View.vue'),
@@ -39,9 +34,9 @@ const router = createRouter({
       component: () => import('../views/tabs/Page7View.vue'),
     },
     {
-      path: '/page8',
-      name: 'page8',
-      component: () => import('../views/tabs/Page8View.vue'),
+      path: '/tasks',
+      name: 'tasks',
+      component: () => import('../views/tabs/TasksView.vue'),
     },
     {
       path: '/notes',

@@ -74,7 +74,7 @@ watch(isAuthorized, async () => {
           </button>
         </div>
       </div>
-      <div v-else class="center-message">Войдите, чтобы просмотреть</div>
+      <div v-else class="center-text">Войдите, чтобы просмотреть</div>
     </CalculatedTabContent>
   </div>
 </template>

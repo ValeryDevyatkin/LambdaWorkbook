@@ -32,7 +32,7 @@ watch(isAuthorized, async () => {
       <div v-if="isAuthorized" class="user-notes-grid">
         <UserNoteCard v-for="note in noteStore.notes" :key="note?.id" :user-note="note" />
       </div>
-      <div v-else class="center-message">Войдите, чтобы просмотреть</div>
+      <div v-else class="center-text">Войдите, чтобы просмотреть</div>
     </CalculatedTabContent>
   </div>
 </template>

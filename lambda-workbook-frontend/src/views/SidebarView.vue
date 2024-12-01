@@ -9,11 +9,10 @@ import { RouterLink } from 'vue-router'
       <RouterLink to="/page1">Химические реакции</RouterLink>
       <RouterLink to="/page2">Качественные реакции</RouterLink>
       <RouterLink to="/page3">Тривиальные названия</RouterLink>
-      <RouterLink to="/page4">Индикаторы</RouterLink>
       <RouterLink to="/page5">Химическое равновесие</RouterLink>
       <RouterLink to="/page6">Справочник</RouterLink>
       <RouterLink to="/page7">Использование таблиц</RouterLink>
-      <RouterLink to="/page8">Решение задач</RouterLink>
+      <RouterLink to="/tasks">Решение задач</RouterLink>
     </nav>
   </div>
 </template>
@@ -22,7 +21,7 @@ import { RouterLink } from 'vue-router'
 .nav-list a {
   display: block;
   font-weight: bold;
-  font-size: var(--large-font-size);
+  font-size: var(--navigation-font-size);
   padding: 10px;
   margin: 10px 0;
 
