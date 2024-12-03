@@ -15,7 +15,7 @@
 
   padding: var(--outter-padding);
   background-color: var(--tab-content-background-color);
-  border-radius: var(--border-radius);
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
   border: var(--border-thickness) solid var(--black-color);
 }
 

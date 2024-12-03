@@ -3,7 +3,7 @@
   --regular-font-size: medium;
   --navigation-font-size: large;
   --large-font-size: 25px;
-  --heading-large-font-size: xx-large;
+  --heading-large-font-size: 40px;
 
   --small-border-radius: 3px;
   --border-radius: 10px;
@@ -14,14 +14,14 @@
   --outter-padding: 15px;
   --icon-button-size: 40px;
 
-  --view-root-background-color: rgba(105, 168, 92, 0.25);
-  --tab-content-background-color: rgba(214, 214, 202, 0.95);
+  --view-root-background-color: rgba(88, 17, 140, 0.5);
+  --tab-content-background-color: rgba(246, 230, 248, 0.6);
   --black-color: black;
-  --green-alert-color: green;
+  --green-alert-color: greenyellow;
   --red-alert-color: red;
-  --input-background-color: rgba(214, 214, 202, 1);
-  --button-background-color: #3a9555;
-  --button-border-hover-color: #114d17;
+  --input-background-color: rgb(246, 230, 248);
+  --button-background-color: #a76fba;
+  --button-border-hover-color: #540d8d;
 }
 
 html,
@@ -63,6 +63,7 @@ body,
 h1 {
   margin: 0;
   font-size: var(--heading-large-font-size);
+  font-weight: bolder;
   text-decoration: none;
 
   color: var(--black-color);
@@ -125,7 +126,7 @@ a {
 button:hover,
 a:hover {
   border: var(--border-thickness) solid var(--button-border-hover-color);
-  box-shadow: 0 0 10px var(--green-alert-color);
+  box-shadow: 0 0 10px var(--button-border-hover-color);
   transition: all 0.4s ease-in-out;
 }
 
