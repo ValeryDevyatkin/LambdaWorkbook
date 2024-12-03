@@ -37,7 +37,7 @@ import ChemElementInfoBlock from '@/components/ChemElementInfoBlock.vue'
           Внешне очень похожа на поваренную(она тоже белая и состоит из елких кристаллов).
         </ChemElementInfoBlock>
         <ChemElementInfoBlock element="двойной суперфосфат" longText>
-          <span>CaH2(PO4)2</span>
+          <span>Ca(H2PO4)2</span>
           Минеральное удобрение.
         </ChemElementInfoBlock>
         <ChemElementInfoBlock element="пирит" longText>
