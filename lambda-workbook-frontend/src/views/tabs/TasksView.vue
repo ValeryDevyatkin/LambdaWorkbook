@@ -18,10 +18,13 @@ function hideClarification() {
   <div class="tab-content-root">
     <h1>Решение задач</h1>
     <CalculatedTabContent>
+      <div class="bold-text">B21</div>
       Образец соли, массовые доли элементов в которой равны: [w(K) = 24,68 %], [w(Mn) = 34.81 %],
       [w(O) = 40,51 %], выдерживали при температуре 300 °C до постоянной массы. В результате
       выделилась теплота количеством 39 кДж. Рассчитайте, на сколько изменилась исходная масса (г)
       взятого образца, если известно, что при разложении 1 моль этой соли выделяется 26 кДж теплоты.
+      <br />
+      (2023г.)
       <div class="tasks-clarify-grid">
         <div v-if="isClarificationVisible">
           Определить соль из условия задачи можно с помощью массовой доли одного из составляющих ее
@@ -33,7 +36,7 @@ function hideClarification() {
           n(O2)]. По коэффициентам в уравнении химической реакции видно, что n(O2) в 2 раза меньше,
           чем n(KMnO4). Тогда [m(O2) = 16 * 2 * 0,75 = 24 г].
           <br />
-          <span>Ответ: 24 г.</span>
+          <div class="answer-text">Ответ: 24 г.</div>
         </div>
         <div v-else></div>
         <CustomTooltip v-if="!isClarificationVisible" class="icon-button" text="Пояснение">
@@ -59,7 +62,8 @@ function hideClarification() {
   display: grid;
 }
 
-.tasks-clarify-grid span {
+.answer-text {
+  margin-top: var(--outter-padding);
   font-weight: bold;
   font-size: var(--navigation-font-size);
 }
