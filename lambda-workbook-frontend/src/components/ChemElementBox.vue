@@ -46,7 +46,7 @@ const boxStyle = computed(() => {
   -webkit-text-stroke-color: white;
   -webkit-text-stroke-width: 1px;
 
-  --box-element-size: 50px;
+  --box-element-size: 60px;
   width: var(--box-element-size);
   height: var(--box-element-size);
 }
