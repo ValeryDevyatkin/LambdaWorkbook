@@ -124,7 +124,6 @@ var builder = WebApplication.CreateBuilder(args);
         .AllowAnyHeader());
 
     app.UseHttpsRedirection();
-    app.UseCors("AllowSpecificOrigin");
     app.UseAuthentication(); // AuthN
     app.UseAuthorization(); // AuthZ
     app.MapControllers();
