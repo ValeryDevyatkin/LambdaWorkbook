@@ -8,10 +8,9 @@ const props = defineProps<{
 }>()
 
 const boxStyle = computed(() => {
-  const s = {
+  return {
     backgroundImage: props.image ? `url('${props.image}')` : 'none',
   }
-  return s
 })
 </script>
 
